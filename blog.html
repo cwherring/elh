@@ -1,0 +1,147 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Empower Learning Hub</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <link href="css/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Arial', sans-serif; }
+    .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
+    .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+    nav ul { min-width: 0; text-align: left !important; }
+    nav ul li { display: inline-block !important; }
+    @media (min-width: 768px) {
+      nav ul { display: flex !important; flex-direction: row !important; }
+    }
+    .hamburger-button {
+      color: #1F2937 !important; /* text-gray-900 */
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      border: none;
+    }
+    .hamburger-button:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const { createElement: e, useState } = React;
+
+    function NavBar() {
+      const [isOpen, setIsOpen] = useState(false);
+      const toggleMenu = () => setIsOpen(!isOpen);
+
+      return e('nav', { className: 'bg-gradient text-white p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
+        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
+          e('h1', { className: 'text-2xl font-bold' }, 'Empower Learning Hub'),
+          /*e('button', {
+            className: 'md:hidden hamburger-button focus:outline-none',
+            onClick: toggleMenu
+          }, e('span', { className: 'text-2xl' }, isOpen ? '✕' : '☰')),*/
+          e('ul', { 
+            className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0`,
+            style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+          },
+            e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
+            e('li', null, e('a', { href: 'index.html#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
+            e('li', null, e('a', { href: 'index.html#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
+            e('li', null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
+            e('li', null, e('a', { href: 'index.html#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
+            e('li', null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
+            e('li', null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
+            e('li', null, e('a', { href: 'blog.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Blog')),
+            e('li', null, e('a', { href: 'index.html#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
+          )
+        )
+      );
+    }
+
+    function Blog() {
+      return e('section', { className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Blog'),
+          e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-8' },
+            'Stay updated with tips, news, and insights on homeschooling from Empower Learning Hub, serving the Northwest Arkansas area.'
+          ),
+          e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8' },
+            e('div', { className: 'bg-white p-6 rounded-lg shadow-lg hover-scale' },
+              e('img', { src: 'https://picsum.photos/400/200', alt: 'Homeschool tips', className: 'w-full h-48 object-cover rounded-lg mb-4' }),
+              e('h3', { className: 'text-xl font-semibold mb-2' }, 'Top 5 Tips for Homeschool Success'),
+              e('p', { className: 'text-gray-600' }, 'Discover strategies to make homeschooling engaging and effective for your child.')
+            ),
+            e('div', { className: 'bg-white p-6 rounded-lg shadow-lg hover-scale' },
+              e('img', { src: 'https://picsum.photos/400/200', alt: 'Learning freedom', className: 'w-full h-48 object-cover rounded-lg mb-4' }),
+              e('h3', { className: 'text-xl font-semibold mb-2' }, 'Why Choose Empower Learning Hub?'),
+              e('p', { className: 'text-gray-600' }, 'Learn how our flexible, student-centered approach empowers independent learning.')
+            )
+          )
+        )
+      );
+    }
+
+    function Footer() {
+      return e('footer', { className: 'bg-gradient text-white py-8' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('p', null, '© 2025 Empower Learning Hub. All rights reserved.')
+        )
+      );
+    }
+
+    function App() {
+      return e('div', null,
+        e(NavBar),
+        e(Blog),
+        e(Footer)
+      );
+    }
+
+    ReactDOM.render(e(App), document.getElementById('root'));
+  </script>
+</body>
+</html>

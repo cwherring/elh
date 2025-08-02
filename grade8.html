@@ -1,0 +1,199 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 8 - Empower Learning Hub</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <link href="css/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Arial', sans-serif; }
+    .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
+    .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+    nav ul { min-width: 0; text-align: left !important; }
+    nav ul li { display: inline-block !important; }
+    @media (min-width: 768px) {
+      nav ul { display: flex !important; flex-direction: row !important; }
+    }
+    .hamburger-button {
+      color: #1F2937 !important;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      border: none;
+    }
+    .hamburger-button:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const { createElement: e, useState } = React;
+
+    function NavBar() {
+      const [isOpen, setIsOpen] = useState(false);
+      const toggleMenu = () => setIsOpen(!isOpen);
+
+      return e('nav', { className: 'bg-gradient text-white p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
+        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
+          e('h1', { className: 'text-2xl font-bold' }, 'Empower Learning Hub'),
+          /*e('button', {
+            className: 'md:hidden hamburger-button focus:outline-none',
+            onClick: toggleMenu
+          }, e('span', { className: 'text-2xl' }, isOpen ? '✕' : '☰')),*/
+          e('ul', { 
+            className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0`,
+            style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+          },
+            e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
+            e('li', null, e('a', { href: 'index.html#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
+            e('li', null, e('a', { href: 'index.html#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
+            e('li', null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
+            e('li', null, e('a', { href: 'index.html#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
+            e('li', null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
+            e('li', null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
+            e('li', null, e('a', { href: 'blog.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Blog')),
+            e('li', null, e('a', { href: 'index.html#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
+          )
+        )
+      );
+    }
+
+    function Breadcrumb() {
+      return e('nav', { className: 'bg-gray-100 p-4' },
+        e('div', { className: 'container mx-auto' },
+          e('a', { href: 'index.html', className: 'text-indigo-600 hover:underline' }, 'Home'),
+          ' > ',
+          e('a', { href: 'index.html#classes', className: 'text-indigo-600 hover:underline' }, 'Our Classes'),
+          ' > Grade 8'
+        )
+      );
+    }
+
+    function Grade8Detail() {
+      return e('section', { className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold mb-4' }, 'Grade 8'),
+		      e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, '7-9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/crystal-schmidt.html', className: 'text-indigo-600 hover:underline' }, 'Crystal Schmidt')),
+			      e('p', null, 'Requirements: Only a personal laptop, such as a Chromebook, needs to be provided by the student.'),
+            e('p', null, 'Math:\tI am experienced in teaching math through Algebra 2 and enjoy helping students grow in confidence and see the beauty of math. Our Learning Nest will focus on solidifying middle school concepts like fractions, decimals, percents, and basic geometry. In conjunction with Physical Science, we will study unit conversions and scientific notation. We will embark on building the foundational skills of algebra, including solving equations with one and two variables, graphing linear equations, working with exponents, and more. Instruction will be tailored to the needs of the students and will be taught using a customized curriculum. Students will be given copies of my selected text to use as a reference at home.'),
+            e('p', null, 'Science:\tWe will be studying Physical Science this year, and I especially look forward to hands-on labs related to engineering. We will be using Journey Homeschool’s video lectures and note-taking aids, as well as Novare’s Physical Science textbook, to study at home. During class, we will review content highlights, master vocabulary, consider current advancements and applications in the field, and complete labs.'),
+            e('p', null, 'Social Studies and English Language Arts:\tWe will integrate these two subjects for a rich and meaningful experience. Our study of history and ELA will be rooted in what I’m calling our “Family History Project”, “Autobiography and Journaling Project”, and “Diversity and Perspectives Project”. Students will be given the Abeka text "America: Land I Love" as a spine text to study. Students will be instructed in grammar, mechanics, composition, AI use, and writer bias as these topics arise organically through our projects. Students will practice online etiquette and academic accountability as they log in to Google Classroom every week to post an answer to a discussion question and respond to their classmates.'),
+            e('p', null, 'Family History Project:\tNow is a great time to engage students in history by encouraging them to place their relatives into world events. This deepens students’ family ties and creates a more personal connection to history. When I taught the Family History Project previously, I heard beautiful feedback from families about the precious moments they experienced with loved ones as a result of the project. As students interview their relatives on topics such as immigration, wars, political policy, home life, childhood diseases, hobbies, careers, and more, the students will make connections not only with their loved ones but also to historical events and our changing world. After interviews and research, students will write about their family’s history and the context of the time in which their relatives lived.'),
+            e('p', null, 'Autobiography and Journaling Project:\tAs we study family history, we will look at the time in which we are presently living and how our story will be of interest to our descendants. In connection with this, students will write an autobiography as well as keep a journal. As part of their journaling, we will be looking at current events through platforms such as World Watch and PBS Newshour for Kids. Students will be asked to summarize events and draw conclusions. Journals will be private writings that students will reference for discussions, unlike the other projects that will be graded for grammar, mechanics, and content.'),
+            e('p', null, 'Diversity and Perspectives Project:\tAs our final piece, we will be writing persuasive essays using the method and language taught in The Lost Tools of Writing. We will read books such as A Long Walk to Water, Tiger Daughter, The Breadwinner, and The Pearl. Books like these will allow students to consider narratives quite different from their own. As time allows, we will explore geography, politics, religion, and cultural practices from around the world through these books. After reading each book, the students will write a persuasive essay on whether a character should have made a specific decision. I look forward to spirited debates and insightful moments as students stretch their ability to reason, view an issue from multiple angles, and eloquently argue their position.'),
+            e('p', null, 'Class Fee: $2,520/Class per student for the fall semester, which includes curriculum. It is payable in $1260 increments at the 6-week quarters. A non-refundable deposit of $50 per class is required at enrollment to hold your student’s place.  This fee covers the supplies needed for the class.')
+          ),          
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Algebra I: Tuesdays and Thursdays 1:00 – 1:55PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/beth-jennings.html', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
+            e('p', null, 'Prerequisites: successful completion of middle school mathematics (Pre-Algebra)'),
+            e('p', null, 'Algebra 1 is a foundational mathematics course designed to introduce students to the principles of algebra and develop their problem-solving and critical-thinking skills. This course covers essential topics such as linear equations, inequalities, functions, polynomials, and quadratic equations. Students will learn to manipulate algebraic expressions, solve equations, and apply algebraic concepts to real-world scenarios. The course emphasizes conceptual understanding, procedural fluency, and the ability to model mathematical relationships using graphs, tables, and equations. Through hands-on activities, collaborative work, and technology integration, students will build a strong foundation for advanced mathematics courses.'),
+            e('p', null, 'Homework: You can expect 3-5 hours of homework per week.'),
+            e('p', null, 'Class Fee: $720/Class per student for the fall semester, which includes curriculum. It is payable in $360 increments at the 6-week quarters. A non-refundable deposit of $100 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class.')
+          ),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Intro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/chris-herring.html', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
+            e('p', null, 'Prerequisites: Computer Literacy or equivalent knowledge'),
+            e('p', null, 'Requirements: Requires a laptop or tablet w/keyboard capable of supporting software development, Internet access will be provided, all needed tools will be free and downloadable.'),
+            e('p', null, 'Introduction to Computer Science with Python is an engaging course for students in grades 8–12, designed to introduce the fundamentals of computer science through the Python programming language. This course covers core concepts such as variables, data types, loops, conditionals, functions, and basic data structures (e.g., lists, dictionaries). Students will learn to write, debug, and test Python code to solve problems and create simple programs, such as games or data analysis tools. The course emphasizes computational thinking, problem-solving, and creativity, with hands-on coding projects and collaborative activities. By exploring real-world applications of programming, students will build a foundation for further study in computer science and related fields.'),
+            e('p', null, 'Homework: You can expect 3-5 hours of homework per week.'),
+            e('p', null, 'Class Fee: $720/Class per student for the fall semester, which includes curriculum. It is payable in $360 increments at the 6-week quarters. A non-refundable deposit of $100 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class.')
+          ),
+    		  e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Language Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage location)'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/angie-tennant.html', className: 'text-indigo-600 hover:underline' }, 'Angie Tennant')),
+      			e('p', null, 'Prerequisites: Basic knowledge of IEW before signing up for this class.'),
+            e('p', null, 'Students will work through the units in the IEW Structure and Style curriculum at a faster pace and using slightly more challenging source texts. The goal this year is to reach at least unit 8.  Students will continue in Fix-It Grammar using Book 3 – Robin Hood.  Stronger vocabulary will be a goal since it’s an advanced class. This is a full language arts credit.'),
+            e('p', null, 'Curriculum: IEW, Fix-It Grammar Book 3 - Robin Hood'),
+            e('p', null, 'Homework: 1-2 hours weekly'),
+            e('p', null, 'Class Fee: Contact Angie Tennant for price at angietennantiew at gmail dot com')
+          ),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Physical Science: Wednesday 10:30 – 11:55AM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/beth-jennings.html', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
+            e('p', null, 'Prerequisites: successful completion of Algebra 1 or currently enrolled'),
+            e('p', null, 'Physical Science is an introductory course for students in grades 8–12 that explores the fundamental principles of physics and chemistry and their applications in the natural world. The course covers topics such as motion, forces, energy, matter, chemical reactions, atomic structure, and the properties of waves. Through hands-on experiments, demonstrations, and problem-solving activities, students will develop an understanding of scientific inquiry, data analysis, and the interconnections between physical phenomena. The course emphasizes critical thinking, mathematical applications, and real-world relevance, preparing students for advanced science courses such as biology, chemistry, or physics. Collaborative projects and laboratory work will foster teamwork and scientific investigation skills.'),
+            e('p', null, 'Homework: You can expect 2-3 hours of homework per week.'),
+            e('p', null, 'Class Fee: $540/Class per student for the fall semester, which includes curriculum. It is payable in $270 increments at the 6-week quarters. A non-refundable deposit of $75 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class.')
+          ),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Computer Literacy: Wednesday 1 – 2PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'Bios/chris-herring.html', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
+            e('p', null, 'Requirements: Requires a laptop or tablet w/keyboard, Internet access will be provided'),
+            e('p', null, 'Computer Literacy is a dynamic course designed for students in grades 5–12 to develop essential digital skills for academic, personal, and professional success in a technology-driven world. This course introduces students to fundamental computer concepts, including hardware and software basics, operating systems, file management, and internet safety. Students will gain proficiency in productivity tools (e.g., word processing, spreadsheets, and presentations), basic coding concepts, digital citizenship, and data management. The course also covers emerging technologies, such as cloud computing, AI, and cybersecurity basics, to prepare students for real-world applications. Through hands-on projects, collaborative activities, and problem-solving tasks, students will build confidence in navigating and leveraging technology effectively.'),
+            e('p', null, 'Homework: You can expect 2-4 hours of homework per week.'),
+            e('p', null, 'Class Fee: $360/Class per student for the fall semester, which includes curriculum. It is payable in $180 increments at the 6-week quarters. A non-refundable deposit of $50 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class.')
+          )
+        )
+      );
+    }
+
+    function Footer() {
+      return e('footer', { className: 'bg-gradient text-white py-8' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('p', null, '© 2025 Empower Learning Hub. All rights reserved.')
+        )
+      );
+    }
+
+    function App() {
+      return e('div', null,
+        e(NavBar),
+        e(Breadcrumb),
+        e(Grade8Detail),
+        e(Footer)
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(e(App));
+  </script>
+</body>
+</html>
