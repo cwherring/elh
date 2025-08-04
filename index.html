@@ -44,10 +44,10 @@
 
     function NavBar() {
       const [isOpen, setIsOpen] = useState(false);
-      const toggleMenu = () => setIsOpen(!isOpen);
+      //const toggleMenu = () => setIsOpen(!isOpen);
 
-      return e('nav', { className: 'p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
-        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
+      return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-[999]', style: { display: 'flex', flexDirection: 'row' } },
+        e('div', { className: 'max-w-screen-xl text-white container w-full  flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
           e('h1', { className: 'text-2xl font-bold' }, 'Empower Learning Hub'),
           /*e('button', {
             className: 'md:hidden hamburger-button focus:outline-none',
@@ -70,6 +70,26 @@
         )
       );
     }
+/*
+    function HeaderSection() {
+      return e('section', {
+          className: 'bg-gradient text-white min-h-[200px] flex flex-col justify-center items-center'
+        },
+        e(NavBar)
+      );
+    }
+*/
+    function HeaderSection() {
+      return e(React.Fragment, null,
+        e(NavBar), // Sticky nav needs to live directly in root render context
+        e('section', {
+          className: 'bg-gradient text-white min-h-[200px] flex flex-col justify-center items-center'
+        },
+          //e('h2', { className: 'text-4xl font-bold' }, 'Empower Learning Hub'),
+          // any hero/banner content here
+        )
+      );
+    }
 
     function Hero() {
       return e('section', { id: 'home', className: 'bg-gray-100 text-black py-20 text-center' },
@@ -81,14 +101,6 @@
       );
     }
 
-    function HeaderSection() {
-      return e('section', {
-          className: 'bg-gradient text-white min-h-[200px] flex flex-col justify-center items-center'
-        },
-        e(NavBar)
-      );
-    }
-
     function About() {
       return e('section', { id: 'about', className: 'py-16 bg-gray-100' },
         e('div', { className: 'container mx-auto text-center' },
@@ -96,7 +108,7 @@
           e('p', { className: 'text-lg max-w-2xl mx-auto' },
             'Empower Learning Hub offers dynamic, homeschool-based education for grades 1-12 serving the Northwest Arkansas area. Our mission is to foster independent learning through engaging classes in core subjects and beyond, tailored to student\'s needs.'
           ),
-          e('img', { src: 'images/group-on-floor.png', alt: 'Students learning', className: 'mt-8 mx-auto rounded-lg shadow-lg hover-scale' })
+          e('img', { src: 'images/group-on-floor.png', alt: 'Students learning', className: 'mt-8 mx-auto rounded-lg shadow-lg' })
         )
       );
     }
@@ -254,13 +266,13 @@
         calendar.render();
       }, []);
 
-      return e('section', { id: 'calendar', className: 'py-16 bg-gray-100' },
+      return e('section', { id: 'calendar', className: 'py-16 bg-gray-100 relative z-10' },
         e('div', { className: 'container mx-auto' },
           e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
           e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
             'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
           ),
-          e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4 overflow-hidden' })
+          e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4' })//overflow-hidden
         )
       );
     }
