@@ -49,6 +49,7 @@
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <link href="css/tailwind.min.css" rel="stylesheet">
+  <link href="/css/calendar-theme.css" rel="stylesheet" />
   <style>
     body { font-family: 'Arial', sans-serif; }
     .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
@@ -291,7 +292,9 @@
         const calendarEl = document.getElementById('calendar');
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'timeGridWeek',
+          //initialView: 'timeGridWeek',
+          initialView: 'timeGridDay',
+          eventOverlap: false,
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
