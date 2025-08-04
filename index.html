@@ -237,6 +237,7 @@
       );
     }
 
+    /*
     function Calendar() {
       useEffect(() => {
         const calendarEl = document.getElementById('calendar');
@@ -255,7 +256,7 @@
             { title: '5th Grade Math (Saxon 6/5) (Catalyst)', daysOfWeek:[2, 4], startTime:'09:30:00', endTime:'10:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '5th/6th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '7th/9th Grade Learning Nest (Catalyst)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '12:30:00', startRecur: '2025-08-26', endRecur: '2026-12-11' },
-            { title: '5th/12th Computer Literacy (Academic Advantage)', daysOfWeek: [2, 4], start: '01:00:00PM', end: '02:00:00PM',  startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th/12th Computer Literacy (Academic Advantage)', daysOfWeek: [2, 4], startTime: '13:00:00', endTime: '14:00:00',  startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '11th/12th Algebra 2 (Academic Advantage)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '09:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '10th/12th Geometry (Academic Advantage)', daysOfWeek: [2, 4], startTime: '10:00:00', endTime: '10:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '11th/12th Pre-Calculus (Academic Advantage)', daysOfWeek: [2, 4], startTime: '11:00:00', endTime: '11:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
@@ -284,7 +285,62 @@
         )
       );
     }
+    */
+    function Calendar() {
+      useEffect(() => {
+        const calendarEl = document.getElementById('calendar');
 
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          slotMinTime: '08:00:00',
+          slotMaxTime: '16:30:00',
+          eventColor: '#4F46E5',
+          eventTextColor: '#FFFFFF',
+          events: [
+            { title: '1st Grade Reading (Catalyst)', daysOfWeek: [2], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Language Arts (Catalyst)', daysOfWeek: [2], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Math (Academic Advantage)', daysOfWeek: [3], startTime: '09:00:00', endTime: '10:25:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '2nd Grade Reading (Catalyst)', daysOfWeek: [4], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Language Arts (Catalyst)', daysOfWeek: [4], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Math (Catalyst)', daysOfWeek: [3], startTime: '10:30:00', endTime: '12:00:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '3rd Grade Math (Academic Advantage)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '3rd/4th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '4th Grade Math (Saxon 5/4) (Catalyst)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th Grade Math (Saxon 6/5) (Catalyst)', daysOfWeek:[2, 4], startTime:'09:30:00', endTime:'10:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th/6th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '7th/9th Grade Learning Nest (Catalyst)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '12:30:00', startRecur: '2025-08-26', endRecur: '2026-12-11' },
+            { title: '5th/12th Computer Literacy (Academic Advantage)', daysOfWeek: [2, 4], startTime: '13:00:00', endTime: '14:00:00',  startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Algebra 2 (Academic Advantage)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '09:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '10th/12th Geometry (Academic Advantage)', daysOfWeek: [2, 4], startTime: '10:00:00', endTime: '10:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Pre-Calculus (Academic Advantage)', daysOfWeek: [2, 4], startTime: '11:00:00', endTime: '11:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '8th/10th Algebra I (Academic Advantage)', daysOfWeek: [2, 4], startTime:'13:00:00', endTime:'13:55:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th American History with Literature (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th Government/Civics (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Intro to Computer Science with Python (Academic Advantage)', daysOfWeek:[2, 4], startTime:'14:30:00', endTime:'15:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Physical Science (Academic Advantage)', daysOfWeek:[3], startTime:'10:30:00', endTime:'11:55:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Chemistry (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Survey of World History (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' }
+          ]
+        });
+
+        calendar.render();
+      }, []);
+
+      return e('section', { id: 'calendar', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
+          e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
+            'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
+          ),
+          e('div', { id: 'calendar', className: 'bg-white shadow-lg rounded-lg p-4 overflow-hidden' })
+        )
+      );
+    }
     function ClassRequestForm() {
       return e('section', { id: 'class-request', className: 'py-16' },
         e('div', { className: 'container mx-auto' },
