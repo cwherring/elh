@@ -289,12 +289,13 @@
     */
     function Calendar() {
       useEffect(() => {
-        const calendarEl = document.getElementById('calendar');
+        const calendarEl = document.getElementById('calendar-root');
+        if (!calendarEl) return;
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
-          //initialView: 'timeGridWeek',
           initialView: 'timeGridDay',
-          eventOverlap: false,
+          slotEventOverlap: false,
+          expandRows: true,
           height: 'auto',
           contentHeight: 'auto',
           headerToolbar: {
@@ -304,8 +305,14 @@
           },
           slotMinTime: '08:00:00',
           slotMaxTime: '16:30:00',
+          scrollTime: '09:00:00',
           eventColor: '#4F46E5',
           eventTextColor: '#FFFFFF',
+          eventDidMount: function(info) {
+            if (info.el && info.event.title) {
+              info.el.setAttribute('title', info.event.title);
+            }
+          },
           events: [
             { title: '1st Grade Reading (Catalyst)', daysOfWeek: [2], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
             { title: '1st Grade Language Arts (Catalyst)', daysOfWeek: [2], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
@@ -342,10 +349,11 @@
           e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
             'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
           ),
-          e('div', { id: 'calendar', className: 'bg-white shadow-lg rounded-lg p-4 overflow-hidden' })
+          e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4 overflow-hidden' })
         )
       );
     }
+
     function ClassRequestForm() {
       return e('section', { id: 'class-request', className: 'py-16' },
         e('div', { className: 'container mx-auto' },
