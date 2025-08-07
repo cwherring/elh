@@ -70,3 +70,8 @@ nav {
 .fc-timegrid-body {
   overflow-x: auto;
 }
+
+.navbar-menu {
+  list-style: none;
+  padding-left: 0;
+}

@@ -7,26 +7,24 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <link href="css/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#1E40AF',
+            brandGreen: '#10B981'
+          }
+        }
+      }
+    }
+  </script>
   <style>
     body { font-family: 'Arial', sans-serif; }
     .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
     .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
-    nav ul { min-width: 0; text-align: left !important; }
-    nav ul li { display: inline-block !important; }
-    @media (min-width: 768px) {
-      nav ul { display: flex !important; flex-direction: row !important; }
-    }
-    .hamburger-button {
-      color: #1F2937 !important;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.25rem;
-      border: none;
-    }
-    .hamburger-button:hover {
-      background-color: rgba(255, 255, 255, 1);
-    }
+
     nav ul li a {
       color: #000 !important;
     }
@@ -39,19 +37,18 @@
 
     function NavBar() {
       const [isOpen, setIsOpen] = useState(false);
-      const toggleMenu = () => setIsOpen(!isOpen);
 
-      return e('nav', { className: 'bg-gradient text-white p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
-        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
-          
-      e('img', {
-        src: 'images/empower-learning-hub-logo-sm-mini.svg',
-        alt: 'Empower Learning Hub Logo',
-        className: 'h-50px sm:h-8px w-auto max-w-full object-contain'
-      }),
-          e('ul', { 
-            className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0`,
-            style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+      return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50' },
+        e('div', {
+          className: 'max-w-screen-xl container w-full flex flex-col items-start'
+        },
+          e('img', {
+            src: 'images/empower-learning-hub-logo-sm-mini.svg',
+            alt: 'Empower Learning Hub Logo',
+            className: 'max-h-[100px] w-auto object-contain mb-4'
+          }),
+          e('ul', {
+            className: 'flex flex-row flex-wrap gap-4 list-none text-black self-start'
           },
             e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
             e('li', null, e('a', { href: 'index.html#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
@@ -84,7 +81,7 @@
           e('h2', { className: 'text-3xl font-bold mb-4' }, 'Grade 7'),
 		      e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, '7-9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/crystal-schmidt.html', className: 'text-indigo-600 hover:underline' }, 'Crystal Schmidt')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#crystal-schmidt', className: 'text-indigo-600 hover:underline' }, 'Crystal Schmidt')),
 			      e('p', null, 'Requirements: Only a personal laptop, such as a Chromebook, needs to be provided by the student.'),
             e('p', null, 'Math:\tI am experienced in teaching math through Algebra 2 and enjoy helping students grow in confidence and see the beauty of math. Our Learning Nest will focus on solidifying middle school concepts like fractions, decimals, percents, and basic geometry. In conjunction with Physical Science, we will study unit conversions and scientific notation. We will embark on building the foundational skills of algebra, including solving equations with one and two variables, graphing linear equations, working with exponents, and more. Instruction will be tailored to the needs of the students and will be taught using a customized curriculum. Students will be given copies of my selected text to use as a reference at home.'),
             e('p', null, 'Science:\tWe will be studying Physical Science this year, and I especially look forward to hands-on labs related to engineering. We will be using Journey Homeschool’s video lectures and note-taking aids, as well as Novare’s Physical Science textbook, to study at home. During class, we will review content highlights, master vocabulary, consider current advancements and applications in the field, and complete labs.'),
@@ -96,7 +93,7 @@
           ),          
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Language Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage location)'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/angie-tennant.html', className: 'text-indigo-600 hover:underline' }, 'Angie Tennant')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#angie-tennant', className: 'text-indigo-600 hover:underline' }, 'Angie Tennant')),
       			e('p', null, 'Prerequisites: Basic knowledge of IEW before signing up for this class.'),
             e('p', null, 'Students will work through the units in the IEW Structure and Style curriculum at a faster pace and using slightly more challenging source texts. The goal this year is to reach at least unit 8.  Students will continue in Fix-It Grammar using Book 3 – Robin Hood.  Stronger vocabulary will be a goal since it’s an advanced class. This is a full language arts credit.'),
             e('p', null, 'Curriculum: IEW, Fix-It Grammar Book 3 - Robin Hood'),
@@ -105,7 +102,7 @@
           ),
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Computer Literacy: Wednesday 1 – 2PM (Academic Advantage location)'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/chris-herring.html', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#chris-herring', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
             e('p', null, 'Computer Literacy is a dynamic course designed for students in grades 5–12 to develop essential digital skills for academic, personal, and professional success in a technology-driven world. This course introduces students to fundamental computer concepts, including hardware and software basics, operating systems, file management, and internet safety. Students will gain proficiency in productivity tools (e.g., word processing, spreadsheets, and presentations), basic coding concepts, digital citizenship, and data management. The course also covers emerging technologies, such as cloud computing, AI, and cybersecurity basics, to prepare students for real-world applications. Through hands-on projects, collaborative activities, and problem-solving tasks, students will build confidence in navigating and leveraging technology effectively.'),
             e('p', null, 'Homework: You can expect 2-4 hours of homework per week.'),
             e('p', null, 'Class fee: $410/Class per student for the fall semester, which includes curriculum and a non-refundable deposit of $50.  The non-refundable deposit of $50 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class. The remainder is payable in $180 increments at the 6-week quarters.')

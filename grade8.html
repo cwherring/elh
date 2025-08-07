@@ -7,26 +7,24 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <link href="css/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#1E40AF',
+            brandGreen: '#10B981'
+          }
+        }
+      }
+    }
+  </script>
   <style>
     body { font-family: 'Arial', sans-serif; }
     .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
     .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
-    nav ul { min-width: 0; text-align: left !important; }
-    nav ul li { display: inline-block !important; }
-    @media (min-width: 768px) {
-      nav ul { display: flex !important; flex-direction: row !important; }
-    }
-    .hamburger-button {
-      color: #1F2937 !important;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.25rem;
-      border: none;
-    }
-    .hamburger-button:hover {
-      background-color: rgba(255, 255, 255, 1);
-    }
+
     nav ul li a {
       color: #000 !important;
     }
@@ -39,19 +37,18 @@
 
     function NavBar() {
       const [isOpen, setIsOpen] = useState(false);
-      const toggleMenu = () => setIsOpen(!isOpen);
 
-      return e('nav', { className: 'bg-gradient text-white p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
-        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
-          
-      e('img', {
-        src: 'images/empower-learning-hub-logo-sm-mini.svg',
-        alt: 'Empower Learning Hub Logo',
-        className: 'h-50px sm:h-8px w-auto max-w-full object-contain'
-      }),
-          e('ul', { 
-            className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0`,
-            style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+      return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50' },
+        e('div', {
+          className: 'max-w-screen-xl container w-full flex flex-col items-start'
+        },
+          e('img', {
+            src: 'images/empower-learning-hub-logo-sm-mini.svg',
+            alt: 'Empower Learning Hub Logo',
+            className: 'max-h-[100px] w-auto object-contain mb-4'
+          }),
+          e('ul', {
+            className: 'flex flex-row flex-wrap gap-4 list-none text-black self-start'
           },
             e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
             e('li', null, e('a', { href: 'index.html#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
@@ -84,7 +81,7 @@
           e('h2', { className: 'text-3xl font-bold mb-4' }, 'Grade 8'),
 		      e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, '7-9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/crystal-schmidt.html', className: 'text-indigo-600 hover:underline' }, 'Crystal Schmidt')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#crystal-schmidt', className: 'text-indigo-600 hover:underline' }, 'Crystal Schmidt')),
 			      e('p', null, 'Requirements: Only a personal laptop, such as a Chromebook, needs to be provided by the student.'),
             e('p', null, 'Math:\tI am experienced in teaching math through Algebra 2 and enjoy helping students grow in confidence and see the beauty of math. Our Learning Nest will focus on solidifying middle school concepts like fractions, decimals, percents, and basic geometry. In conjunction with Physical Science, we will study unit conversions and scientific notation. We will embark on building the foundational skills of algebra, including solving equations with one and two variables, graphing linear equations, working with exponents, and more. Instruction will be tailored to the needs of the students and will be taught using a customized curriculum. Students will be given copies of my selected text to use as a reference at home.'),
             e('p', null, 'Science:\tWe will be studying Physical Science this year, and I especially look forward to hands-on labs related to engineering. We will be using Journey Homeschool’s video lectures and note-taking aids, as well as Novare’s Physical Science textbook, to study at home. During class, we will review content highlights, master vocabulary, consider current advancements and applications in the field, and complete labs.'),
@@ -96,7 +93,7 @@
           ),          
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Algebra I: Tuesdays and Thursdays 1:00 – 1:55PM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/beth-jennings.html', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#beth-jennings', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
             e('p', null, 'Prerequisites: successful completion of middle school mathematics (Pre-Algebra)'),
             e('p', null, 'Algebra 1 is a foundational mathematics course designed to introduce students to the principles of algebra and develop their problem-solving and critical-thinking skills. This course covers essential topics such as linear equations, inequalities, functions, polynomials, and quadratic equations. Students will learn to manipulate algebraic expressions, solve equations, and apply algebraic concepts to real-world scenarios. The course emphasizes conceptual understanding, procedural fluency, and the ability to model mathematical relationships using graphs, tables, and equations. Through hands-on activities, collaborative work, and technology integration, students will build a strong foundation for advanced mathematics courses.'),
             e('p', null, 'Homework: You can expect 3-5 hours of homework per week.'),
@@ -104,7 +101,7 @@
           ),
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Intro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/chris-herring.html', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#chris-herring', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
             e('p', null, 'Prerequisites: Computer Literacy or equivalent knowledge'),
             e('p', null, 'Requirements: Requires a laptop or tablet w/keyboard capable of supporting software development, Internet access will be provided, all needed tools will be free and downloadable.'),
             e('p', null, 'Introduction to Computer Science with Python is an engaging course for students in grades 8–12, designed to introduce the fundamentals of computer science through the Python programming language. This course covers core concepts such as variables, data types, loops, conditionals, functions, and basic data structures (e.g., lists, dictionaries). Students will learn to write, debug, and test Python code to solve problems and create simple programs, such as games or data analysis tools. The course emphasizes computational thinking, problem-solving, and creativity, with hands-on coding projects and collaborative activities. By exploring real-world applications of programming, students will build a foundation for further study in computer science and related fields.'),
@@ -113,7 +110,7 @@
           ),
     		  e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Language Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage location)'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/angie-tennant.html', className: 'text-indigo-600 hover:underline' }, 'Angie Tennant')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#angie-tennant', className: 'text-indigo-600 hover:underline' }, 'Angie Tennant')),
       			e('p', null, 'Prerequisites: Basic knowledge of IEW before signing up for this class.'),
             e('p', null, 'Students will work through the units in the IEW Structure and Style curriculum at a faster pace and using slightly more challenging source texts. The goal this year is to reach at least unit 8.  Students will continue in Fix-It Grammar using Book 3 – Robin Hood.  Stronger vocabulary will be a goal since it’s an advanced class. This is a full language arts credit.'),
             e('p', null, 'Curriculum: IEW, Fix-It Grammar Book 3 - Robin Hood'),
@@ -122,7 +119,7 @@
           ),
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Physical Science: Wednesday 10:30 – 11:55AM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/beth-jennings.html', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#beth-jennings', className: 'text-indigo-600 hover:underline' }, 'Beth Jennings')),
             e('p', null, 'Prerequisites: successful completion of Algebra 1 or currently enrolled'),
             e('p', null, 'Physical Science is an introductory course for students in grades 8–12 that explores the fundamental principles of physics and chemistry and their applications in the natural world. The course covers topics such as motion, forces, energy, matter, chemical reactions, atomic structure, and the properties of waves. Through hands-on experiments, demonstrations, and problem-solving activities, students will develop an understanding of scientific inquiry, data analysis, and the interconnections between physical phenomena. The course emphasizes critical thinking, mathematical applications, and real-world relevance, preparing students for advanced science courses such as biology, chemistry, or physics. Collaborative projects and laboratory work will foster teamwork and scientific investigation skills.'),
             e('p', null, 'Homework: You can expect 2-3 hours of homework per week.'),
@@ -130,7 +127,7 @@
           ),
           e('div', { className: 'mb-8' },
             e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Computer Literacy: Wednesday 1 – 2PM'),
-            e('p', null, 'Teacher: ', e('a', { href: 'bios/chris-herring.html', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#chris-herring', className: 'text-indigo-600 hover:underline' }, 'Chris Herring')),
             e('p', null, 'Requirements: Requires a laptop or tablet w/keyboard, Internet access will be provided'),
             e('p', null, 'Computer Literacy is a dynamic course designed for students in grades 5–12 to develop essential digital skills for academic, personal, and professional success in a technology-driven world. This course introduces students to fundamental computer concepts, including hardware and software basics, operating systems, file management, and internet safety. Students will gain proficiency in productivity tools (e.g., word processing, spreadsheets, and presentations), basic coding concepts, digital citizenship, and data management. The course also covers emerging technologies, such as cloud computing, AI, and cybersecurity basics, to prepare students for real-world applications. Through hands-on projects, collaborative activities, and problem-solving tasks, students will build confidence in navigating and leveraging technology effectively.'),
             e('p', null, 'Homework: You can expect 2-4 hours of homework per week.'),

@@ -11,37 +11,36 @@
   <script src="https://cdn.tailwindcss.com"></script>
 <!--<link href="css/tailwind.css" rel="stylesheet">-->
   <link href="css/calendar-theme.css" rel="stylesheet" />
-  <script>
+  <!--script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             brandBlue: '#1E40AF',
             brandGreen: '#10B981'
+          },
+          keyframes: {
+            zoomFade: {
+              '0%': { opacity: '0', transform: 'scale(1.05)' },
+              '100%': { opacity: '1', transform: 'scale(1)' }
+            }
+          },
+          animation: {
+            zoomFade: 'zoomFade 1s ease-out'
           }
         }
       }
     }
-  </script>
+  </script-->
+</style>
+
   <style>
     body { font-family: 'Arial', sans-serif; }
     .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
     .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
     #calendar { max-width: 900px; margin: 0 auto; padding: 20px; }
-
-
     section[id] { padding-top: 4rem; margin-top: -4rem; }
     html { scroll-behavior: smooth; }
-    .hamburger-button {
-      color: #1F2937 !important; /* text-gray-900 */
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.25rem;
-      border: none;
-    }
-    .hamburger-button:hover {
-      background-color: rgba(255, 255, 255, 1);
-    }
     nav ul li a {
       color: #000 !important;
     }
@@ -123,10 +122,18 @@
         e('img', {
           src: images[currentIndex],
           alt: `Carousel image ${currentIndex + 1}`,
+          loading: 'lazy',
           className: 'rounded-lg shadow-lg w-full object-cover h-auto transition-opacity duration-500'
+        }),
+        e('img', {
+          src: images[(currentIndex + 1) % images.length],
+          alt: '',
+          loading: 'lazy',
+          style: { display: 'none' }
         })
       );
     }
+
 
     function About() {
       return e('section', { id: 'about', className: 'py-16 bg-gray-100' },
