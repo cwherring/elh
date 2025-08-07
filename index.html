@@ -8,18 +8,28 @@
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-  <link href="css/tailwind.min.css" rel="stylesheet">
-  <link href="/css/calendar-theme.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+<!--<link href="css/tailwind.css" rel="stylesheet">-->
+  <link href="css/calendar-theme.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#1E40AF',
+            brandGreen: '#10B981'
+          }
+        }
+      }
+    }
+  </script>
   <style>
     body { font-family: 'Arial', sans-serif; }
     .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
     .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
     #calendar { max-width: 900px; margin: 0 auto; padding: 20px; }
-    nav ul { min-width: 0; text-align: left !important; }
-    nav ul li { display: inline-block !important; }
-    @media (min-width: 768px) {
-      nav ul { display: flex !important; flex-direction: row !important; }
-    }
+
+
     section[id] { padding-top: 4rem; margin-top: -4rem; }
     html { scroll-behavior: smooth; }
     .hamburger-button {
@@ -46,26 +56,25 @@ function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   //const toggleMenu = () => setIsOpen(!isOpen);
 
-  return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50', style: { display: 'flex', flexDirection: 'row' } },
-    e('div', { className: 'max-w-screen-xl container w-full flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
+  return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50' }, //style: { display: 'flex', flexDirection: 'row' } },
+    e('div', { className: 'max-w-screen-xl container w-full flex flex-wrap justify-between items-center' },
       e('img', {
         src: 'images/empower-learning-hub-logo-sm-mini.svg',
         alt: 'Empower Learning Hub Logo',
-        className: 'h-50px sm:h-8px w-auto max-w-full object-contain'
+        className: 'h-100px sm:h-80px w-auto max-w-full object-contain'
       }),
       e('ul', { 
-        className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0 text-black`,
-        style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+        className: 'flex flex-wrap gap-4 list-none mt-2 md:mt-0 text-black w-full md:w-auto'
       },
-        e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
-        e('li', null, e('a', { href: '#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
-        e('li', null, e('a', { href: '#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
-        e('li', null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
-        e('li', null, e('a', { href: '#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
-        e('li', null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
-        e('li', null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
+        e('li', { className: 'block' }, null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
+        e('li', { className: 'block' }, null, e('a', { href: '#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
+        e('li', { className: 'block' }, null, e('a', { href: '#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
+        e('li', { className: 'block' }, null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
+        e('li', { className: 'block' }, null, e('a', { href: '#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
+        e('li', { className: 'block' }, null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
+        e('li', { className: 'block' }, null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
         //e('li', null, e('a', { href: 'blog.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Blog')),
-        e('li', null, e('a', { href: '#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
+        e('li', { className: 'block' }, null, e('a', { href: '#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
       )
     )
   );
