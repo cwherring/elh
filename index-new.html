@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Default meta tags - React Helmet will override these -->
+  <title>Empower Learning Hub</title>
+  <meta name="description" content="Dynamic homeschool classes for grades 1-12 serving Northwest Arkansas. Personalized education fostering independent learning through engaging core subjects and beyond.">
+  <meta name="keywords" content="homeschool, education, Northwest Arkansas, grades 1-12, learning, classes">
+  
+  <!-- Favicons (keep these as they are) -->
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Empower" />
+  <link rel="manifest" href="/site.webmanifest" /> 
+
+  <!-- External Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- ADD REACT HELMET FROM CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-helmet/6.1.0/react-helmet.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Your existing CSS -->
+  <link href="css/calendar-theme.css" rel="stylesheet" />
+  <style>
+    body { font-family: 'Arial', sans-serif; }
+    .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
+    .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+    #calendar { max-width: 900px; margin: 0 auto; padding: 20px; }
+    section[id] { padding-top: 4rem; margin-top: -4rem; }
+    html { scroll-behavior: smooth; }
+    nav ul li a { color: #000 !important; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const { createElement: e, useState, useEffect } = React;
+    // Add React Helmet to your destructuring
+    const { Helmet } = ReactHelmet;
+
+    // SEO Component - Reusable for all sections
+    function SEO({ 
+      title = "Empower Learning Hub - Dynamic Homeschool Classes Grades 1-12", 
+      description = "Dynamic homeschool classes for grades 1-12 serving Northwest Arkansas. Personalized education fostering independent learning through engaging core subjects and beyond.",
+      keywords = "homeschool, education, Northwest Arkansas, grades 1-12, learning, classes, personalized education",
+      url = window.location.href,
+      image = "/images/empower-learning-hub-logo-sm-mini.svg",
+      type = "website"
+    }) {
+      return e(Helmet, null,
+        // Basic Meta Tags
+        e('title', null, title),
+        e('meta', { name: 'description', content: description }),
+        e('meta', { name: 'keywords', content: keywords }),
+        e('link', { rel: 'canonical', href: url }),
+        
+        // Open Graph / Facebook
+        e('meta', { property: 'og:type', content: type }),
+        e('meta', { property: 'og:title', content: title }),
+        e('meta', { property: 'og:description', content: description }),
+        e('meta', { property: 'og:image', content: `https://empowerlearninghub.com${image}` }),
+        e('meta', { property: 'og:url', content: url }),
+        e('meta', { property: 'og:site_name', content: 'Empower Learning Hub' }),
+        
+        // Twitter Card
+        e('meta', { name: 'twitter:card', content: 'summary_large_image' }),
+        e('meta', { name: 'twitter:title', content: title }),
+        e('meta', { name: 'twitter:description', content: description }),
+        e('meta', { name: 'twitter:image', content: `https://empowerlearninghub.com${image}` }),
+        
+        // Additional SEO
+        e('meta', { name: 'robots', content: 'index, follow' }),
+        e('meta', { name: 'author', content: 'Empower Learning Hub' }),
+        
+        // Structured Data for Educational Organization
+        e('script', { 
+          type: 'application/ld+json',
+          dangerouslySetInnerHTML: { 
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Empower Learning Hub",
+              "description": description,
+              "url": "https://empowerlearninghub.com",
+              "logo": "https://empowerlearninghub.com/images/empower-learning-hub-logo-sm-mini.svg",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "719 W Walnut St, Ste 103, Box 188",
+                "addressLocality": "Rogers",
+                "addressRegion": "AR",
+                "postalCode": "72758",
+                "addressCountry": "US"
+              },
+              "telephone": "(479) 363-1339",
+              "email": "info@empowerlearninghub.com",
+              "areaServed": "Northwest Arkansas",
+              "educationalCredentialAwarded": "Homeschool Education",
+              "offers": {
+                "@type": "EducationalOccupationalProgram",
+                "name": "Homeschool Classes Grades 1-12",
+                "description": "Comprehensive homeschool education programs"
+              }
+            })
+          }
+        })
+      );
+    }
+
+    const aboutImages = [
+      'images/group-on-floor.png',
+      'images/1st-Grade-Reader.jpg',
+      'images/1st-grader-math.jpg',
+      'images/2nd-grade-girls-learning-math.jpg',
+      'images/2nd-Grader-with-counting-blocks.jpg',
+    ];
+
+    function NavBar() {
+      const [isOpen, setIsOpen] = useState(false);
+
+      return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50' },
+        e('div', {
+          className: 'max-w-screen-xl container w-full flex flex-col items-start'
+        },
+          e('img', {
+            src: 'images/empower-learning-hub-logo-sm-mini.svg',
+            alt: 'Empower Learning Hub Logo',
+            className: 'max-h-[100px] w-auto object-contain mb-4'
+          }),
+          e('ul', {
+            className: 'flex flex-row flex-wrap gap-4 list-none text-black self-start'
+          },
+            e('li', {}, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2' }, 'Home')),
+            e('li', {}, e('a', { href: '#about', className: 'text-black hover:underline block py-2' }, 'About')),
+            e('li', {}, e('a', { href: '#classes', className: 'text-black hover:underline block py-2' }, 'Classes')),
+            e('li', {}, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2' }, 'Enroll')),
+            e('li', {}, e('a', { href: '#calendar', className: 'text-black hover:underline block py-2' }, 'Calendar')),
+            e('li', {}, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2' }, 'Teachers')),
+            e('li', {}, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2' }, 'Resources')),
+            e('li', {}, e('a', { href: '#contact', className: 'text-black hover:underline block py-2' }, 'Contact'))
+          )
+        )
+      );
+    }
+
+    function HeaderSection() {
+      return e(React.Fragment, null,
+        e(NavBar)
+      );
+    }
+
+    function Hero() {
+      return e(React.Fragment, null,
+        // SEO for homepage
+        e(SEO, {
+          title: "Empower Learning Hub - Dynamic Homeschool Classes Grades 1-12 | Northwest Arkansas",
+          description: "Transform your child's education with personalized homeschool classes for grades 1-12 in Northwest Arkansas. Expert teachers, engaging curriculum, and flexible learning environments.",
+          keywords: "homeschool classes Northwest Arkansas, grades 1-12 education, personalized learning, Rogers Arkansas homeschool, dynamic education",
+          url: "https://empowerlearninghub.com"
+        }),
+        e('section', { id: 'home', className: 'bg-gray-100 text-black py-20 text-center' },
+          e('div', { className: 'container mx-auto' },
+            e('h1', { className: 'text-4xl font-bold mb-4' }, "Empower Your Child's Education"), // Changed h2 to h1 for better SEO
+            e('p', { className: 'text-lg text-black mb-6' }, 'Personalized homeschool classes for grades 1-12 serving the Northwest Arkansas area.'),
+            e('a', { href: 'enrollment.html', className: 'bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover-scale' }, 'Get Started')
+          )
+        )
+      );
+    }
+
+    function ImageCarousel({ images, interval = 4000 }) {
+      const [currentIndex, setCurrentIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setCurrentIndex((prev) => (prev + 1) % images.length);
+        }, interval);
+        return () => clearInterval(timer);
+      }, [images.length, interval]);
+
+      return e('div', { className: 'relative w-full max-w-2xl mx-auto' },
+        e('img', {
+          src: images[currentIndex],
+          alt: `Students learning at Empower Learning Hub - ${currentIndex + 1}`,
+          loading: 'lazy',
+          className: 'rounded-lg shadow-lg w-full object-cover h-auto transition-opacity duration-500'
+        }),
+        e('img', {
+          src: images[(currentIndex + 1) % images.length],
+          alt: '',
+          loading: 'lazy',
+          style: { display: 'none' }
+        })
+      );
+    }
+
+    function About() {
+      return e(React.Fragment, null,
+        // Section-specific SEO (this will update meta tags when this section is viewed)
+        e(SEO, {
+          title: "About Empower Learning Hub - Personalized Homeschool Education Northwest Arkansas",
+          description: "Learn about our mission to foster independent learning through engaging classes in core subjects for grades 1-12. Dynamic, homeschool-based education in Northwest Arkansas.",
+          keywords: "about empower learning hub, homeschool education philosophy, Northwest Arkansas education, independent learning",
+          url: "https://empowerlearninghub.com#about"
+        }),
+        e('section', { id: 'about', className: 'py-16 bg-gray-100' },
+          e('div', { className: 'container mx-auto text-center' },
+            e('h2', { className: 'text-3xl font-bold mb-6' }, 'About Empower Learning Hub'),
+            e('p', { className: 'text-lg max-w-2xl mx-auto mb-8' },
+              'Empower Learning Hub offers dynamic, homeschool-based education for grades 1-12 serving the Northwest Arkansas area. Our mission is to foster independent learning through engaging classes in core subjects and beyond, tailored to student\'s needs.'
+            ),
+            e(ImageCarousel, { images: aboutImages })
+          )
+        )
+      );
+    }
+
+    function Classes() {
+      const classGroups = [
+        {
+          title: 'Grade 1 (Multiple locations)',
+          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Tuesdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Tuesdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Wednesdays 9:00 – 10:25AM (Academic Advantage)\nCost: $525/Class including a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade1.html'
+        },
+        {
+          title: 'Grade 2 (Multiple locations)',
+          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Thursdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Thursdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Wednesdays 10:30AM – 12:00PM (Academic Advantage)\nCost: $525/Class including a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade2.html'
+        },
+        {
+          title: 'Grade 3 (Catalyst location)',
+          description: 'Teacher: Kacy Tribble\nClasses:\n\tRightStart Math: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade3.html'
+        },
+        {
+          title: 'Grade 4 (Catalyst location)',
+          description: 'Teachers: Kacy Tribble\nClasses:\n\tSaxon Math 5/4: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade4.html'
+        },
+        {
+          title: 'Grade 5 (Multiple locations)',
+          description: 'Teachers: Angie Tennant, Chris Herring, Debby Herring, and Kelley Easley\nClasses:\n\tSaxon Math 5th Grade: Tuesdays/Thursdays 9:30 – 10:30AM (Catalyst)\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade5.html'
+        },
+        {
+          title: 'Grade 6 (Multiple locations)',
+          description: 'Teachers: Angie Tennant, Kelley Easley, and Chris Herring\nClasses:\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade6.html'
+        },
+        {
+          title: 'Grade 7 (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant and Chris Herring\nClasses:\n\t7th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade7.html'
+        },
+        {
+          title: 'Grade 8 (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant, Chris Herring, and Beth Jennings\nClasses:\n\t8th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade8.html'
+        },
+        {
+          title: 'Grade 9th - 12th High School (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant, Kelley Easley, Chris Herring, Debby Herring, and Beth Jennings\nClasses:\n\t9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra 2: Tuesdays and Thursdays 9:00 – 9:55AM (Academic Advantage)\n\tHigh School Geometry: Tuesdays and Thursdays 10:00 – 10:55AM (Academic Advantage)\n\tPre-Calculus: Tuesdays and Thursdays 11:00 – 11:55AM (Academic Advantage)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tAmerican History with Literature: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tGovernment/Civics: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)\n\tWriting Elegant Essays: Wednesdays 12:00 – 1:30PM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\n\tChemistry: Wednesday 1:30 – 3:00PM (Academic Advantage)\n\tSurvey of World History: Wednesday 1:30 – 3:00PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade9-12.html'
+        }
+      ];
+
+      return e(React.Fragment, null,
+        e(SEO, {
+          title: "Homeschool Classes Grades 1-12 | Empower Learning Hub Northwest Arkansas",
+          description: "Comprehensive homeschool classes for all grade levels. Math, Language Arts, History, Science, and Computer Science taught by expert educators in Northwest Arkansas.",
+          keywords: "homeschool classes, grades 1-12, math classes, language arts, history, science, computer science, Northwest Arkansas",
+          url: "https://empowerlearninghub.com#classes"
+        }),
+        e('section', { id: 'classes', className: 'py-16' },
+          e('div', { className: 'container mx-auto' },
+            e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
+            e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
+              classGroups.map((group, index) =>
+                e('div', {
+                  key: index,
+                  className: 'bg-white p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 block cursor-pointer',
+                  onClick: () => window.location.href = group.link
+                },
+                  e('h3', { className: 'text-xl font-semibold mb-2' }, group.title),
+                  formatDescription(group.description, group.link)
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    // Your existing formatDescription function
+    function formatDescription(description, link) {
+      const [teacherLine, ...rest] = description.split('\n');
+      const teacherName = teacherLine.replace('Teachers:', '').replace('Teacher:', '').trim();
+
+      const classes = [];
+      let cost = '';
+      let moreInfo = '';
+
+      rest.forEach(line => {
+        if (line.startsWith('\t')) {
+          classes.push(line.replace('\t', '').trim());
+        } else if (line.startsWith('Cost:')) {
+          cost = line.trim();
+        } else if (line.startsWith('Click')) {
+          moreInfo = line.trim();
+        }
+      });
+
+      return e('div', { className: 'class-info' },
+        e('h4', null, `Teacher(s): ${teacherName}`), // Changed to h4 for better hierarchy
+        e('h5', null, 'Classes:'), // Changed to h5
+        e('ul', null,
+          classes.map((cls, idx) => e('li', { key: idx }, cls))
+        ),
+        cost && e('p', null, e('strong', null, 'Cost:'), ` ${cost.replace('Cost:', '').trim()}`),
+        moreInfo && e('p', null, e('a', { href: link }, 'Click to see detailed information about these classes.'))
+      );
+    }
+
+    function Calendar() {
+      useEffect(() => {
+        const calendarEl = document.getElementById('calendar-root');
+        if (!calendarEl) return;
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridDay',
+          slotEventOverlap: false,
+          expandRows: true,
+          height: 'auto',
+          contentHeight: 'auto',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          slotMinTime: '08:00:00',
+          slotMaxTime: '16:30:00',
+          scrollTime: '09:00:00',
+          eventColor: '#4F46E5',
+          eventTextColor: '#FFFFFF',
+          eventDidMount: function(info) {
+            if (info.el && info.event.title) {
+              info.el.setAttribute('title', info.event.title);
+            }
+          },
+          events: [
+            { title: '1st Grade Reading (Catalyst)', daysOfWeek: [2], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Language Arts (Catalyst)', daysOfWeek: [2], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Math (Academic Advantage)', daysOfWeek: [3], startTime: '09:00:00', endTime: '10:25:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '2nd Grade Reading (Catalyst)', daysOfWeek: [4], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Language Arts (Catalyst)', daysOfWeek: [4], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Math (Academic Advantage)', daysOfWeek: [3], startTime: '10:30:00', endTime: '12:00:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '3rd Grade Math (Catalyst)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '3rd/4th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '4th Grade Math (Saxon 5/4) (Catalyst)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th Grade Math (Saxon 6/5) (Catalyst)', daysOfWeek:[2, 4], startTime:'09:30:00', endTime:'10:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th/6th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '7th/9th Grade Learning Nest (Catalyst)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '12:30:00', startRecur: '2025-08-26', endRecur: '2026-12-11' },
+            { title: '5th/12th Computer Literacy (Academic Advantage)', daysOfWeek: [2, 4], startTime: '13:00:00', endTime: '14:00:00',  startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Algebra 2 (Academic Advantage)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '09:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '10th/12th Geometry (Academic Advantage)', daysOfWeek: [2, 4], startTime: '10:00:00', endTime: '10:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Pre-Calculus (Academic Advantage)', daysOfWeek: [2, 4], startTime: '11:00:00', endTime: '11:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '8th/10th Algebra I (Academic Advantage)', daysOfWeek: [2, 4], startTime:'13:00:00', endTime:'13:55:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th American History with Literature (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th Government/Civics (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Intro to Computer Science with Python (Academic Advantage)', daysOfWeek:[2, 4], startTime:'14:30:00', endTime:'15:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Physical Science (Academic Advantage)', daysOfWeek:[3], startTime:'10:30:00', endTime:'11:55:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Language Arts for IEW Advanced Beginners (Academic Advantage)', daysOfWeek:[3], startTime:'10:00:00', endTime:'11:30:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Writing Elegant Essays (Academic Advantage)', daysOfWeek:[3], startTime:'12:00:00', endTime:'13:30:00', startRecur:'2025-09-10', endRecur:'2025-12-10' }, 
+            { title: '9th/12th Chemistry (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Survey of World History (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' }
+          ]
+        });
+
+        calendar.render();
+      }, []);
+
+      return e(React.Fragment, null,
+        e(SEO, {
+          title: "Class Schedule & Calendar | Empower Learning Hub Homeschool Classes",
+          description: "View our complete class schedule for grades 1-12 homeschool classes. Morning elementary and middle school classes, flexible high school scheduling in Northwest Arkansas.",
+          keywords: "class schedule, homeschool calendar, Northwest Arkansas classes, grade 1-12 schedule",
+          url: "https://empowerlearninghub.com#calendar"
+        }),
+        e('section', { id: 'calendar', className: 'py-16 bg-gray-100 relative z-10' },
+          e('div', { className: 'container mx-auto' },
+            e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
+            e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
+              'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
+            ),
+            e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4' })
+          )
+        )
+      );
+    }
+
+    // Your existing form components with SEO additions
+    function ClassRequestForm() {
+      return e(React.Fragment, null,
+        e(SEO, {
+          title: "Suggest a New Class | Empower Learning Hub Homeschool",
+          description: "Have an idea for a new homeschool class? Share your suggestions with Empower Learning Hub. We're always looking to expand our grade 1-12 curriculum offerings.",
+          keywords: "suggest class, new homeschool classes, curriculum ideas, Northwest Arkansas education",
+          url: "https://empowerlearninghub.com#class-request"
+        }),
+        e('section', { id: 'class-request', className: 'py-16' },
+          e('div', { className: 'container mx-auto' },
+            e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Suggest a New Class'),
+            e('form', { action: 'https://formspree.io/f/xovlpvjp', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
+                e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+                e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
+              e('div', { className: 'mt-4' }, null,
+                e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Your Name'),
+                e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
+                ),
+              e('div', { className: 'mt-4' }, null,
+                e('label', { htmlFor: 'email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
+                e('input', { type: 'text', id: 'email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
+                ),
+              e('div', { className: 'mt-4' }, null,
+                e('label', { htmlFor: 'phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
+                e('input', { type: 'text', id: 'phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
+                ),           
+              e('div', { className: 'mt-4' },
+                e('label', { htmlFor: 'class-idea', className: 'block text-gray-700 mb-2' }, 'Class Idea'),
+                e('textarea', { id: 'class-idea', name: 'class_idea', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Describe your class idea', required: true })
+                ),
+              e('div', { className: 'text-center' },
+                e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Submit Idea')
+                ) 
+              )
+            )
+          )
+       );
+    }
+
+    function TeacherSolicitation() {
+      return e(React.Fragment, null,
+        e(SEO, {
+          title: "Join Our Teaching Team | Homeschool Teachers Northwest Arkansas",
+          description: "Passionate about education? Join Empower Learning Hub's teaching team. We're seeking educators for literature, math, science, history, and computer science classes.",
+          keywords: "homeschool teaching jobs, Northwest Arkansas teachers, education careers, teaching opportunities",
+          url: "https://empowerlearninghub.com#teacher-solicitation"
+        }),
+        e('section', { id: 'teacher-solicitation', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold mb-6 text-center' }, 'Join Our Teaching Team'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+            'We\'re looking for passionate educators to teach classes at Empower Learning Hub. Share your expertise in literature, math, science, history, or computer science!'
+          ),
+          e('form', { action: 'https://formspree.io/f/mzzvkzda', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
+            e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+            e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
+            e('div', null,
+              e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Name'),
+              e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
+            ),
+             e('div', { className: 'mt-4' }, null,
+              e('label', { htmlFor: 'email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
+              e('input', { type: 'text', id: 'email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
+            ),
+             e('div', { className: 'mt-4' }, null,
+              e('label', { htmlFor: 'phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
+              e('input', { type: 'text', id: 'phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
+            ),           
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'subject-area', className: 'block text-gray-700 mb-2' }, 'Subject Area'),
+              e('input', { type: 'text', id: 'subject-area', name: 'subject', className: 'w-full p-3 border rounded-lg', placeholder: 'e.g., Math, Computer Science', required: true })
+            ),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'bio', className: 'block text-gray-700 mb-2' }, 'Bio'),
+              e('textarea', { id: 'bio', name: 'bio', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Tell us about yourself', required: true })
+            ),
+            e('div', { className: 'text-center' },
+                e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Apply Now')
+            )
+          ) 
+        )      
+      )
+    );
+    }
+
+    function Contact() {
+      return e(React.Fragment, null,
+        e(SEO, {
+          title: "Contact Empower Learning Hub | Northwest Arkansas Homeschool",
+          description: "Get in touch with Empower Learning Hub for homeschool class information. Located in Rogers, AR, serving the Northwest Arkansas homeschool community.",
+          keywords: "contact homeschool, Rogers Arkansas education, Northwest Arkansas classes, homeschool information",
+          url: "https://empowerlearninghub.com#contact"
+        }),
+        e('section', { id: 'contact', className: 'py-16 bg-gray-100' },
+          e('div', { className: 'container mx-auto text-center' },
+            e('h2', { className: 'text-3xl font-bold mb-6' }, 'Contact Us'),
+            e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+              'Reach out to Empower Learning Hub for more information or to join our community serving the Northwest Arkansas area.'
+            ),
+            e('p', { className: 'text-lg' }, e('a', { href: 'mailto:info@empowerlearninghub.com', className: 'text-indigo-600' }, 'info@empowerlearninghub.com')),
+            e('p', { className: 'text-lg' }, 'Phone: (479) 363-1339'),
+            e('p', { className: 'text-lg' }, 'Postal Address: 719 W Walnut St, Ste 103, Box 188, Rogers, AR 72758')
+          )
+        )
+      );
+    }
+
+    function Footer() {
+      return e('footer', { className: 'bg-gradient text-white py-8' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('p', null, '© 2025 Empower Learning Hub. All rights reserved.')
+        )
+      );
+    }
+
+    function App() {
+      useEffect(() => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = anchor.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              const headerHeight = document.querySelector('nav').offsetHeight;
+              const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+              window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+          });
+        });
+      }, []);
+
+      return e('div', null,
+        e(HeaderSection),
+        e(Hero),
+        e(About),
+        e(Classes),
+        e(Calendar),
+        e(ClassRequestForm),
+        e(TeacherSolicitation),
+        e(Contact),
+        e(Footer)
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(e(App));
+  </script>
+</body>
+</html>
