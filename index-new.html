@@ -19,7 +19,7 @@
   <!-- External Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <!-- ADD REACT HELMET FROM CDN -->
+  <!-- React Helmet from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-helmet/6.1.0/react-helmet.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -40,8 +40,6 @@
   <div id="root"></div>
   <script>
     const { createElement: e, useState, useEffect } = React;
-    // Add React Helmet to your destructuring
-    const { Helmet } = ReactHelmet;
 
     // SEO Component - Reusable for all sections
     function SEO({ 
@@ -52,6 +50,14 @@
       image = "/images/empower-learning-hub-logo-sm-mini.svg",
       type = "website"
     }) {
+      // Check if ReactHelmet is available
+      if (typeof ReactHelmet === 'undefined' || !ReactHelmet.Helmet) {
+        console.warn('React Helmet not loaded properly');
+        return null;
+      }
+
+      const { Helmet } = ReactHelmet;
+      
       return e(Helmet, null,
         // Basic Meta Tags
         e('title', null, title),
@@ -164,7 +170,7 @@
         }),
         e('section', { id: 'home', className: 'bg-gray-100 text-black py-20 text-center' },
           e('div', { className: 'container mx-auto' },
-            e('h1', { className: 'text-4xl font-bold mb-4' }, "Empower Your Child's Education"), // Changed h2 to h1 for better SEO
+            e('h1', { className: 'text-4xl font-bold mb-4' }, "Empower Your Child's Education"),
             e('p', { className: 'text-lg text-black mb-6' }, 'Personalized homeschool classes for grades 1-12 serving the Northwest Arkansas area.'),
             e('a', { href: 'enrollment.html', className: 'bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover-scale' }, 'Get Started')
           )
@@ -199,22 +205,13 @@
     }
 
     function About() {
-      return e(React.Fragment, null,
-        // Section-specific SEO (this will update meta tags when this section is viewed)
-        e(SEO, {
-          title: "About Empower Learning Hub - Personalized Homeschool Education Northwest Arkansas",
-          description: "Learn about our mission to foster independent learning through engaging classes in core subjects for grades 1-12. Dynamic, homeschool-based education in Northwest Arkansas.",
-          keywords: "about empower learning hub, homeschool education philosophy, Northwest Arkansas education, independent learning",
-          url: "https://empowerlearninghub.com#about"
-        }),
-        e('section', { id: 'about', className: 'py-16 bg-gray-100' },
-          e('div', { className: 'container mx-auto text-center' },
-            e('h2', { className: 'text-3xl font-bold mb-6' }, 'About Empower Learning Hub'),
-            e('p', { className: 'text-lg max-w-2xl mx-auto mb-8' },
-              'Empower Learning Hub offers dynamic, homeschool-based education for grades 1-12 serving the Northwest Arkansas area. Our mission is to foster independent learning through engaging classes in core subjects and beyond, tailored to student\'s needs.'
-            ),
-            e(ImageCarousel, { images: aboutImages })
-          )
+      return e('section', { id: 'about', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('h2', { className: 'text-3xl font-bold mb-6' }, 'About Empower Learning Hub'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-8' },
+            'Empower Learning Hub offers dynamic, homeschool-based education for grades 1-12 serving the Northwest Arkansas area. Our mission is to foster independent learning through engaging classes in core subjects and beyond, tailored to student\'s needs.'
+          ),
+          e(ImageCarousel, { images: aboutImages })
         )
       );
     }
@@ -268,26 +265,18 @@
         }
       ];
 
-      return e(React.Fragment, null,
-        e(SEO, {
-          title: "Homeschool Classes Grades 1-12 | Empower Learning Hub Northwest Arkansas",
-          description: "Comprehensive homeschool classes for all grade levels. Math, Language Arts, History, Science, and Computer Science taught by expert educators in Northwest Arkansas.",
-          keywords: "homeschool classes, grades 1-12, math classes, language arts, history, science, computer science, Northwest Arkansas",
-          url: "https://empowerlearninghub.com#classes"
-        }),
-        e('section', { id: 'classes', className: 'py-16' },
-          e('div', { className: 'container mx-auto' },
-            e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
-            e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
-              classGroups.map((group, index) =>
-                e('div', {
-                  key: index,
-                  className: 'bg-white p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 block cursor-pointer',
-                  onClick: () => window.location.href = group.link
-                },
-                  e('h3', { className: 'text-xl font-semibold mb-2' }, group.title),
-                  formatDescription(group.description, group.link)
-                )
+      return e('section', { id: 'classes', className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
+          e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
+            classGroups.map((group, index) =>
+              e('div', {
+                key: index,
+                className: 'bg-white p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 block cursor-pointer',
+                onClick: () => window.location.href = group.link
+              },
+                e('h3', { className: 'text-xl font-semibold mb-2' }, group.title),
+                formatDescription(group.description, group.link)
               )
             )
           )
@@ -295,7 +284,6 @@
       );
     }
 
-    // Your existing formatDescription function
     function formatDescription(description, link) {
       const [teacherLine, ...rest] = description.split('\n');
       const teacherName = teacherLine.replace('Teachers:', '').replace('Teacher:', '').trim();
@@ -315,15 +303,15 @@
       });
 
       return e('div', { className: 'class-info' },
-        e('h4', null, `Teacher(s): ${teacherName}`), // Changed to h4 for better hierarchy
-        e('h5', null, 'Classes:'), // Changed to h5
+        e('h4', null, `Teacher(s): ${teacherName}`),
+        e('h5', null, 'Classes:'),
         e('ul', null,
           classes.map((cls, idx) => e('li', { key: idx }, cls))
         ),
         cost && e('p', null, e('strong', null, 'Cost:'), ` ${cost.replace('Cost:', '').trim()}`),
         moreInfo && e('p', null, e('a', { href: link }, 'Click to see detailed information about these classes.'))
       );
-    }
+    }    
 
     function Calendar() {
       useEffect(() => {
@@ -383,93 +371,71 @@
         calendar.render();
       }, []);
 
-      return e(React.Fragment, null,
-        e(SEO, {
-          title: "Class Schedule & Calendar | Empower Learning Hub Homeschool Classes",
-          description: "View our complete class schedule for grades 1-12 homeschool classes. Morning elementary and middle school classes, flexible high school scheduling in Northwest Arkansas.",
-          keywords: "class schedule, homeschool calendar, Northwest Arkansas classes, grade 1-12 schedule",
-          url: "https://empowerlearninghub.com#calendar"
-        }),
-        e('section', { id: 'calendar', className: 'py-16 bg-gray-100 relative z-10' },
-          e('div', { className: 'container mx-auto' },
-            e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
-            e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
-              'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
+      return e('section', { id: 'calendar', className: 'py-16 bg-gray-100 relative z-10' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
+          e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
+            'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
+          ),
+          e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4' })
+        )
+      );
+    }
+
+    function ClassRequestForm() {
+      return e('section', { id: 'class-request', className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Suggest a New Class'),
+          e('form', { action: 'https://formspree.io/f/xovlpvjp', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
+            e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+            //e('input', { type: 'hidden', name: '_gotcha', style: { display: 'none' } }),
+            e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Your Name'),
+              e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
             ),
-            e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4' })
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
+              e('input', { type: 'email', id: 'email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
+            ),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
+              e('input', { type: 'tel', id: 'phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
+            ),           
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'class-idea', className: 'block text-gray-700 mb-2' }, 'Class Idea'),
+              e('textarea', { id: 'class-idea', name: 'class_idea', className: 'w-full p-3 border rounded-lg', rows: 4, placeholder: 'Describe your class idea', required: true })
+            ),
+            e('div', { className: 'text-center' },
+              e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg hover-scale' }, 'Submit Idea')
+            ) 
           )
         )
       );
     }
 
-    // Your existing form components with SEO additions
-    function ClassRequestForm() {
-      return e(React.Fragment, null,
-        e(SEO, {
-          title: "Suggest a New Class | Empower Learning Hub Homeschool",
-          description: "Have an idea for a new homeschool class? Share your suggestions with Empower Learning Hub. We're always looking to expand our grade 1-12 curriculum offerings.",
-          keywords: "suggest class, new homeschool classes, curriculum ideas, Northwest Arkansas education",
-          url: "https://empowerlearninghub.com#class-request"
-        }),
-        e('section', { id: 'class-request', className: 'py-16' },
-          e('div', { className: 'container mx-auto' },
-            e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Suggest a New Class'),
-            e('form', { action: 'https://formspree.io/f/xovlpvjp', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
-                e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
-                e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
-              e('div', { className: 'mt-4' }, null,
-                e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Your Name'),
-                e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
-                ),
-              e('div', { className: 'mt-4' }, null,
-                e('label', { htmlFor: 'email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
-                e('input', { type: 'text', id: 'email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
-                ),
-              e('div', { className: 'mt-4' }, null,
-                e('label', { htmlFor: 'phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
-                e('input', { type: 'text', id: 'phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
-                ),           
-              e('div', { className: 'mt-4' },
-                e('label', { htmlFor: 'class-idea', className: 'block text-gray-700 mb-2' }, 'Class Idea'),
-                e('textarea', { id: 'class-idea', name: 'class_idea', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Describe your class idea', required: true })
-                ),
-              e('div', { className: 'text-center' },
-                e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Submit Idea')
-                ) 
-              )
-            )
-          )
-       );
-    }
-
     function TeacherSolicitation() {
-      return e(React.Fragment, null,
-        e(SEO, {
-          title: "Join Our Teaching Team | Homeschool Teachers Northwest Arkansas",
-          description: "Passionate about education? Join Empower Learning Hub's teaching team. We're seeking educators for literature, math, science, history, and computer science classes.",
-          keywords: "homeschool teaching jobs, Northwest Arkansas teachers, education careers, teaching opportunities",
-          url: "https://empowerlearninghub.com#teacher-solicitation"
-        }),
-        e('section', { id: 'teacher-solicitation', className: 'py-16 bg-gray-100' },
+      return e('section', { id: 'teacher-solicitation', className: 'py-16 bg-gray-100' },
         e('div', { className: 'container mx-auto' },
           e('h2', { className: 'text-3xl font-bold mb-6 text-center' }, 'Join Our Teaching Team'),
-          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6 text-center' },
             'We\'re looking for passionate educators to teach classes at Empower Learning Hub. Share your expertise in literature, math, science, history, or computer science!'
           ),
           e('form', { action: 'https://formspree.io/f/mzzvkzda', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
             e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+            //e('input', { type: 'hidden', name: '_gotcha', style: { display: 'none' } }),
             e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
             e('div', null,
-              e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Name'),
-              e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
+              e('label', { htmlFor: 'teacher-name', className: 'block text-gray-700 mb-2' }, 'Name'),
+              e('input', { type: 'text', id: 'teacher-name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
             ),
-             e('div', { className: 'mt-4' }, null,
-              e('label', { htmlFor: 'email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
-              e('input', { type: 'text', id: 'email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'teacher-email', className: 'block text-gray-700 mb-2' }, 'Your Email Address'),
+              e('input', { type: 'email', id: 'teacher-email', name: 'email', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Email Address', required: true })
             ),
-             e('div', { className: 'mt-4' }, null,
-              e('label', { htmlFor: 'phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
-              e('input', { type: 'text', id: 'phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'teacher-phone', className: 'block text-gray-700 mb-2' }, 'Your Phone Number'),
+              e('input', { type: 'tel', id: 'teacher-phone', name: 'phone', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Phone Number', required: false })
             ),           
             e('div', { className: 'mt-4' },
               e('label', { htmlFor: 'subject-area', className: 'block text-gray-700 mb-2' }, 'Subject Area'),
@@ -477,35 +443,26 @@
             ),
             e('div', { className: 'mt-4' },
               e('label', { htmlFor: 'bio', className: 'block text-gray-700 mb-2' }, 'Bio'),
-              e('textarea', { id: 'bio', name: 'bio', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Tell us about yourself', required: true })
+              e('textarea', { id: 'bio', name: 'bio', className: 'w-full p-3 border rounded-lg', rows: 4, placeholder: 'Tell us about yourself', required: true })
             ),
             e('div', { className: 'text-center' },
-                e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Apply Now')
+              e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg hover-scale' }, 'Apply Now')
             )
           ) 
         )      
-      )
-    );
+      );
     }
 
     function Contact() {
-      return e(React.Fragment, null,
-        e(SEO, {
-          title: "Contact Empower Learning Hub | Northwest Arkansas Homeschool",
-          description: "Get in touch with Empower Learning Hub for homeschool class information. Located in Rogers, AR, serving the Northwest Arkansas homeschool community.",
-          keywords: "contact homeschool, Rogers Arkansas education, Northwest Arkansas classes, homeschool information",
-          url: "https://empowerlearninghub.com#contact"
-        }),
-        e('section', { id: 'contact', className: 'py-16 bg-gray-100' },
-          e('div', { className: 'container mx-auto text-center' },
-            e('h2', { className: 'text-3xl font-bold mb-6' }, 'Contact Us'),
-            e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
-              'Reach out to Empower Learning Hub for more information or to join our community serving the Northwest Arkansas area.'
-            ),
-            e('p', { className: 'text-lg' }, e('a', { href: 'mailto:info@empowerlearninghub.com', className: 'text-indigo-600' }, 'info@empowerlearninghub.com')),
-            e('p', { className: 'text-lg' }, 'Phone: (479) 363-1339'),
-            e('p', { className: 'text-lg' }, 'Postal Address: 719 W Walnut St, Ste 103, Box 188, Rogers, AR 72758')
-          )
+      return e('section', { id: 'contact', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('h2', { className: 'text-3xl font-bold mb-6' }, 'Contact Us'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+            'Reach out to Empower Learning Hub for more information or to join our community serving the Northwest Arkansas area.'
+          ),
+          e('p', { className: 'text-lg' }, e('a', { href: 'mailto:info@empowerlearninghub.com', className: 'text-indigo-600' }, 'info@empowerlearninghub.com')),
+          e('p', { className: 'text-lg' }, 'Phone: (479) 363-1339'),
+          e('p', { className: 'text-lg' }, 'Postal Address: 719 W Walnut St, Ste 103, Box 188, Rogers, AR 72758')
         )
       );
     }
@@ -547,8 +504,19 @@
       );
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(e(App));
+    // Wait for React Helmet to load before rendering
+    function waitForHelmet() {
+      if (typeof ReactHelmet !== 'undefined' && ReactHelmet.Helmet) {
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(e(App));
+      } else {
+        console.log('Waiting for React Helmet to load...');
+        setTimeout(waitForHelmet, 100);
+      }
+    }
+
+    // Start the app
+    waitForHelmet();
   </script>
 </body>
 </html>
