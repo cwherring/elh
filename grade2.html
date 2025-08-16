@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 2 - Empower Learning Hub</title>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Empower" />
+  <link rel="manifest" href="/site.webmanifest" /> 
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#1E40AF',
+            brandGreen: '#10B981'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Arial', sans-serif; }
+    .bg-gradient { background: linear-gradient(135deg, #4F46E5, #10B981); }
+    .hover-scale:hover { transform: scale(1.05); transition: transform 0.3s ease; }
+
+    nav ul li a {
+      color: #000 !important;
+    }  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const { createElement: e, useState } = React;
+
+    function NavBar() {
+      const [isOpen, setIsOpen] = useState(false);
+
+      return e('nav', { className: 'bg-gradient w-full p-4 sticky top-0 z-50' },
+        e('div', {
+          className: 'max-w-screen-xl container w-full flex flex-col items-start'
+        },
+          e('img', {
+            src: 'images/empower-learning-hub-logo-sm-mini.svg',
+            alt: 'Empower Learning Hub Logo',
+            className: 'max-h-[100px] w-auto object-contain mb-4'
+          }),
+          e('ul', {
+            className: 'flex flex-row flex-wrap gap-4 list-none text-black self-start'
+          },
+            e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
+            e('li', null, e('a', { href: 'index.html#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
+            e('li', null, e('a', { href: 'index.html#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
+            e('li', null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
+            e('li', null, e('a', { href: 'index.html#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
+            e('li', null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
+            e('li', null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
+            //e('li', null, e('a', { href: 'blog.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Blog')),
+            e('li', null, e('a', { href: 'index.html#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
+          )
+        )
+      );
+    }
+    
+    function Breadcrumb() {
+      return e('nav', { className: 'bg-gray-100 p-4' },
+        e('div', { className: 'container mx-auto' },
+          e('a', { href: 'index.html', className: 'text-indigo-600 hover:underline' }, 'Home'),
+          ' > ',
+          e('a', { href: 'index.html#classes', className: 'text-indigo-600 hover:underline' }, 'Our Classes'),
+          ' > Grade 2'
+        )
+      );
+    }
+
+    function Grade2Detail() {
+      return e('section', { className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold mb-4' }, 'Grade 2'),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Reading: Thursdays 9:30 – 10:50AM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#debby-herring', className: 'text-indigo-600 hover:underline' }, 'Debby Herring')),
+            e('p', null, 'Students will be reading from different types of writing as well as different favorite and/or classic children’s authors like Mo Willems, Arnold Lobel, Cynthia Rylant, and Marc Brown. We will be focusing on comprehension strategies as well as decoding skills. Second semester we will move into reading short chapter books like Magic Treehouse (maybe sooner if they are ready).'),
+            e('p', null, 'Homework: Students will be asked to read 20 – 30 minutes nightly and complete some comprehension activities.'),
+            e('p', null, 'Class fee: $525/Class per student for the fall semester, which includes curriculum and a non-refundable deposit of $75.  The non-refundable deposit of $75 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class. The remainder is payable in $225 increments at the 6-week quarters.')
+          ),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'Language Arts (Writing, Spelling, and Grammar): Thursdays 11:00AM – 12:30PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#debby-herring', className: 'text-indigo-600 hover:underline' }, 'Debby Herring')),
+            e('p', null, 'Students will continue to hone their writing skills by learning to make their sentences longer and stronger and using the spelling patterns they are learning in their writing. We will also be doing some beginning editing.'),
+            e('p', null, 'Homework will consist of journal writing assignments, spelling work, and an occasional grammar activity.'),
+            e('p', null, 'Curriculum: All About Spelling 2, Evan-Moor Grammar and Punctuation 2, A Reason for Writing – Words of Jesus'),
+            e('p', null, 'Class fee: $525/Class per student for the fall semester, which includes curriculum and a non-refundable deposit of $75.  The non-refundable deposit of $75 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class. The remainder is payable in $225 increments at the 6-week quarters.')
+          ),
+          e('div', { className: 'mb-8' },
+            e('h3', { className: 'text-2xl font-semibold mb-2' }, 'RightStart Math: Wednesdays 10:30AM – 12:00PM'),
+            e('p', null, 'Teacher: ', e('a', { href: 'teachers.html#debby-herring', className: 'text-indigo-600 hover:underline' }, 'Debby Herring')),
+            e('p', null, 'Students will continue to build their strong foundation in math through the activities and games in RightStart Math Level C.'),
+            e('p', null, 'Homework: Students will practice math concepts through math games and an occasional math worksheet.'),
+            e('p', null, 'Class fee: $525/Class per student for the fall semester, which includes curriculum and a non-refundable deposit of $75.  The non-refundable deposit of $75 per class is required at enrollment to hold your student’s place. This fee covers the supplies needed for the class. The remainder is payable in $225 increments at the 6-week quarters.')
+          )
+        )
+      );
+    }
+
+    function Footer() {
+      return e('footer', { className: 'bg-gradient text-white py-8' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('p', null, '© 2025 Empower Learning Hub. All rights reserved.')
+        )
+      );
+    }
+
+    function App() {
+      return e('div', null,
+        e(NavBar),
+        e(Breadcrumb),
+        e(Grade2Detail),
+        e(Footer)
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(e(App));
+  </script>
+</body>
+</html>

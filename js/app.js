@@ -1,0 +1,386 @@
+const { createElement: e, useState, useEffect } = React;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// ⛑️ All component functions (NavBar, Hero, About, Classes, Calendar, etc.) go here
+// ✅ Fully modular, separated for readability and scalability
+/*
+function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  return e('nav', { className: 'p-4 sticky top-0 z-10' },
+    e('div', { className: 'container mx-auto flex justify-between items-center' },
+      
+      e('ul', {
+        className: `flex flex-col md:flex-row gap-4`,
+      },
+        e('li', null, e('a', { href: 'index.html' }, 'Home')),
+        e('li', null, e('a', { href: '#about' }, 'About')),
+        e('li', null, e('a', { href: '#classes' }, 'Classes')),
+        e('li', null, e('a', { href: 'enrollment.html' }, 'Enroll')),
+        e('li', null, e('a', { href: '#calendar' }, 'Calendar')),
+        e('li', null, e('a', { href: 'teachers.html' }, 'Teachers')),
+        e('li', null, e('a', { href: 'resources.html' }, 'Resources')),
+        e('li', null, e('a', { href: '#contact' }, 'Contact'))
+      )
+    )
+  );
+}
+  */    
+    function NavBar() {
+      const [isOpen, setIsOpen] = useState(false);
+      const toggleMenu = () => setIsOpen(!isOpen);
+
+      return e('nav', { className: 'p-4 sticky top-0 z-10', style: { display: 'flex', flexDirection: 'row' } },
+        e('div', { className: 'container mx-auto flex justify-between items-center', style: { justifyContent: 'space-between !important' } },
+          
+      e('img', {
+        src: 'images/empower-learning-hub-logo-sm-mini.svg',
+        alt: 'Empower Learning Hub Logo',
+        className: 'h-50px sm:h-8px w-auto max-w-full object-contain'
+      }),
+          e('ul', { 
+            className: `flex flex-col md:flex-row md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} md:flex md:mt-0 text-black`,
+            style: { display: 'flex', flexDirection: 'row !important', alignItems: 'center', gap: '1.5rem', textAlign: 'left' }
+          },
+            e('li', null, e('a', { href: 'index.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Home')),
+            e('li', null, e('a', { href: '#about', className: 'text-black hover:underline block py-2 md:py-0' }, 'About')),
+            e('li', null, e('a', { href: '#classes', className: 'text-black hover:underline block py-2 md:py-0' }, 'Classes')),
+            e('li', null, e('a', { href: 'enrollment.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Enroll')),
+            e('li', null, e('a', { href: '#calendar', className: 'text-black hover:underline block py-2 md:py-0' }, 'Calendar')),
+            e('li', null, e('a', { href: 'teachers.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Teachers')),
+            e('li', null, e('a', { href: 'resources.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Resources')),
+            //e('li', null, e('a', { href: 'blog.html', className: 'text-black hover:underline block py-2 md:py-0' }, 'Blog')),
+            e('li', null, e('a', { href: '#contact', className: 'text-black hover:underline block py-2 md:py-0' }, 'Contact'))
+          )
+        )
+      );
+    }
+
+// 🧠 More component definitions (Hero, About, Classes, Calendar, Forms, Footer)
+// 🔀 You can split these into separate files later like `components/NavBar.js`, etc.
+    function Hero() {
+      return e('section', { id: 'home', className: 'bg-gray-100 text-black py-20 text-center' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-4xl font-bold mb-4' }, "Empower Your Child's Education"),
+          //e('p', { className: 'text-lg text-black mb-6' }, 'Personalized homeschool classes for grades 1-12 serving the Northwest Arkansas area.'),
+          e('a', { href: 'enrollment.html', className: 'bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover-scale' }, 'Get Started')
+        )
+      );
+    }
+
+    function HeaderSection() {
+      return e('section', {
+          className: 'bg-gradient text-white min-h-[200px] flex flex-col justify-center items-center'
+        },
+        e(NavBar)
+      );
+    }
+
+    function About() {
+      return e('section', { id: 'about', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('h2', { className: 'text-3xl font-bold mb-6' }, 'About Empower Learning Hub'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto' },
+            'Empower Learning Hub offers dynamic, homeschool-based education for grades 1-12 serving the Northwest Arkansas area. Our mission is to foster independent learning through engaging classes in core subjects and beyond, tailored to student\'s needs.'
+          ),
+          e('img', { src: 'images/group-on-floor.png', alt: 'Students learning', className: 'mt-8 mx-auto rounded-lg shadow-lg hover-scale' })
+        )
+      );
+    }
+
+    function formatDescription(description, link) {
+      const [teacherLine, ...rest] = description.split('\n');
+      const teacherName = teacherLine.replace('Teachers:', '').replace('Teacher:', '').trim();
+
+      const classes = [];
+      let cost = '';
+      let moreInfo = '';
+
+      rest.forEach(line => {
+        if (line.startsWith('\t')) {
+          classes.push(line.replace('\t', '').trim());
+        } else if (line.startsWith('Cost:')) {
+          cost = line.trim();
+        } else if (line.startsWith('Click')) {
+          moreInfo = line.trim();
+        }
+      });
+
+      return e('div', { className: 'class-info' },
+        e('h2', null, `Teacher(s): ${teacherName}`),
+        e('h3', null, 'Classes:'),
+        e('ul', null,
+          classes.map((cls, idx) => e('li', { key: idx }, cls))
+        ),
+        cost && e('p', null, e('strong', null, 'Cost:'), ` ${cost.replace('Cost:', '').trim()}`),
+        moreInfo && e('p', null, e('a', { href: link }, 'Click to see detailed information about these classes.'))
+      );
+    }
+
+    function Classes() {
+      const classGroups = [
+        {
+          title: 'Grade 1 (Multiple locations)',
+          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Tuesdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Tuesdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Wednesdays 9:00 – 10:25AM (Academic Advantage)\nCost: $450/Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade1.html'
+        },
+        {
+          title: 'Grade 2 (Multiple locations)',
+          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Thursdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Thursdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Wednesdays 10:30AM – 12:00PM (Academic Advantage)\nCost: $450/Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade2.html'
+        },
+        {
+          title: 'Grade 3 (Catalyst location)',
+          description: 'Teacher: Kacy Tribble\nClasses:\n\tRightStart Math: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade3.html'
+        },
+        {
+          title: 'Grade 4 (Catalyst location)',
+          description: 'Teachers: Lori Brinson and Kacy Tribble\nClasses:\n\tSaxon Math 5/4: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade4.html'
+        },
+        {
+          title: 'Grade 5 (Multiple locations)',
+          description: 'Teachers: Angie Tennant, Chris Herring, Debby Herring, and Kelley Easley\nClasses:\n\tSaxon Math 5th Grade: Tuesdays/Thursdays 9:30 – 10:30AM (Catalyst)\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade5.html'
+        },
+        {
+          title: 'Grade 6 (Multiple locations)',
+          description: 'Teachers: Angie Tennant, Kelley Easley, and Chris Herring\nClasses:\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade6.html'
+        },
+        {
+          title: 'Grade 7 (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant and Chris Herring\nClasses:\n\t7th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: $360 per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade7.html'
+        },
+        {
+          title: 'Grade 8 (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant, Chris Herring, and Beth Jennings\nClasses:\n\t8th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade8.html'
+        },
+        {
+          title: 'Grade 9th - 12th High School (Multiple locations)',
+          description: 'Teachers: Crystal Schmidt, Angie Tennant, Kelley Easley, Chris Herring, Debby Herring, and Beth Jennings\nClasses:\n\t9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra 2: Tuesdays and Thursdays 9:00 – 9:55AM (Academic Advantage)\n\tHigh School Geometry: Tuesdays and Thursdays 10:00 – 10:55AM (Academic Advantage)\n\tPre-Calculus: Tuesdays and Thursdays 11:00 – 11:55AM (Academic Advantage)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tAmerican History with Literature: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tGovernment/Civics: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)\n\tWriting Elegant Essays: Wednesdays 12:00 – 1:30PM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\n\tChemistry: Wednesday 1:30 – 3:00PM (Academic Advantage)\n\tSurvey of World History: Wednesday 1:30 – 3:00PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          link: 'grade9-12.html'
+        }
+      ];
+
+      return e('section', { id: 'classes', className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
+          e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
+            classGroups.map((group, index) =>
+              e('div', {
+                key: index,
+                className: 'bg-white p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 block cursor-pointer',
+                onClick: () => window.location.href = group.link
+              },
+                e('h3', { className: 'text-xl font-semibold mb-2' }, group.title),
+                formatDescription(group.description, group.link)
+              )
+            )
+          )
+        )
+      );
+    }
+
+    function Calendar() {
+      useEffect(() => {
+        const calendarEl = document.getElementById('calendar-root');
+        if (!calendarEl) return;
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridDay',
+          slotEventOverlap: false,
+          expandRows: true,
+          height: 'auto',
+          contentHeight: 'auto',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          slotMinTime: '08:00:00',
+          slotMaxTime: '16:30:00',
+          scrollTime: '09:00:00',
+          eventColor: '#4F46E5',
+          eventTextColor: '#FFFFFF',
+          eventDidMount: function(info) {
+            if (info.el && info.event.title) {
+              info.el.setAttribute('title', info.event.title);
+            }
+          },
+          events: [
+            { title: '1st Grade Reading (Catalyst)', daysOfWeek: [2], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Language Arts (Catalyst)', daysOfWeek: [2], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '1st Grade Math (Academic Advantage)', daysOfWeek: [3], startTime: '09:00:00', endTime: '10:25:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '2nd Grade Reading (Catalyst)', daysOfWeek: [4], startTime: '09:30:00', endTime: '10:50:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Language Arts (Catalyst)', daysOfWeek: [4], startTime: '11:00:00', endTime: '12:25:00', startRecur: '2025-09-11', endRecur: '2025-12-11' },
+            { title: '2nd Grade Math (Academic Advantage)', daysOfWeek: [3], startTime: '10:30:00', endTime: '12:00:00', startRecur: '2025-09-10', endRecur: '2025-12-10' },
+            { title: '3rd Grade Math (Catalyst)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '3rd/4th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '4th Grade Math (Saxon 5/4) (Catalyst)', daysOfWeek: [2, 4], startTime: '08:30:00', endTime: '09:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th Grade Math (Saxon 6/5) (Catalyst)', daysOfWeek:[2, 4], startTime:'09:30:00', endTime:'10:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '5th/6th Grade History with Language Arts (Catalyst)', daysOfWeek: [2, 4], startTime: '09:30:00', endTime: '12:30:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '7th/9th Grade Learning Nest (Catalyst)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '12:30:00', startRecur: '2025-08-26', endRecur: '2026-12-11' },
+            { title: '5th/12th Computer Literacy (Academic Advantage)', daysOfWeek: [2, 4], startTime: '13:00:00', endTime: '14:00:00',  startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Algebra 2 (Academic Advantage)', daysOfWeek: [2, 4], startTime: '09:00:00', endTime: '09:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '10th/12th Geometry (Academic Advantage)', daysOfWeek: [2, 4], startTime: '10:00:00', endTime: '10:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '11th/12th Pre-Calculus (Academic Advantage)', daysOfWeek: [2, 4], startTime: '11:00:00', endTime: '11:55:00', startRecur: '2025-09-09', endRecur: '2025-12-11' },
+            { title: '8th/10th Algebra I (Academic Advantage)', daysOfWeek: [2, 4], startTime:'13:00:00', endTime:'13:55:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th American History with Literature (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '9th/12th Government/Civics (Academic Advantage)', daysOfWeek:[2, 4], startTime:'13:30:00', endTime:'14:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Intro to Computer Science with Python (Academic Advantage)', daysOfWeek:[2, 4], startTime:'14:30:00', endTime:'15:25:00', startRecur:'2025-09-09', endRecur:'2025-12-11' },
+            { title: '8th/12th Physical Science (Academic Advantage)', daysOfWeek:[3], startTime:'10:30:00', endTime:'11:55:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Chemistry (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' },
+            { title: '9th/12th Survey of World History (Academic Advantage)', daysOfWeek:[3], startTime:'13:30:00', endTime:'15:00:00', startRecur:'2025-09-10', endRecur:'2025-12-10' }
+          ]
+        });
+
+        calendar.render();
+      }, []);
+
+      return e('section', { id: 'calendar', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8 text-indigo-700' }, 'Class Schedule'),
+          e('p', { className: 'text-lg text-center max-w-2xl mx-auto mb-6 text-gray-700' },
+            'View our class schedules for grades 1-12. Elementary and middle school classes run on Tuesday and Thursday mornings, while high school classes are offered cafeteria-style at various times.'
+          ),
+          e('div', { id: 'calendar-root', className: 'bg-white shadow-lg rounded-lg p-4 overflow-hidden' })
+        )
+      );
+    }
+
+    function ClassRequestForm() {
+      return e('section', { id: 'class-request', className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Suggest a New Class'),
+          e('form', { action: 'https://formspree.io/f/xdkdkjpw', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
+            e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+            e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
+            e('div', null,
+              e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Your Name'),
+              e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
+            ),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'class-idea', className: 'block text-gray-700 mb-2' }, 'Class Idea'),
+              e('textarea', { id: 'class-idea', name: 'class_idea', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Describe your class idea', required: true })
+            ),
+            e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Submit Idea')
+          )
+        )
+      );
+    }
+
+    function TeacherSolicitation() {
+      return e('section', { id: 'teacher-solicitation', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('h2', { className: 'text-3xl font-bold mb-6' }, 'Join Our Teaching Team'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+            'We\'re looking for passionate educators to teach classes at Empower Learning Hub. Share your expertise in literature, math, science, history, or computer science!'
+          ),
+          e('form', { action: 'https://formspree.io/f/xanbnkll', method: 'POST', className: 'max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg' },
+            e('input', { type: 'hidden', name: '_next', value: 'https://empowerlearninghub.com/thank-you.html' }),
+            e('input', { type: 'hidden', name: '_gotcha'/*, style: 'display:none'*/ }),
+            e('div', null,
+              e('label', { htmlFor: 'name', className: 'block text-gray-700 mb-2' }, 'Name'),
+              e('input', { type: 'text', id: 'name', name: 'name', className: 'w-full p-3 border rounded-lg', placeholder: 'Your Name', required: true })
+            ),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'subject', className: 'block text-gray-700 mb-2' }, 'Subject Area'),
+              e('input', { type: 'text', id: 'subject', name: 'subject', className: 'w-full p-3 border rounded-lg', placeholder: 'e.g., Math, Computer Science', required: true })
+            ),
+            e('div', { className: 'mt-4' },
+              e('label', { htmlFor: 'bio', className: 'block text-gray-700 mb-2' }, 'Bio'),
+              e('textarea', { id: 'bio', name: 'bio', className: 'w-full p-3 border rounded-lg', rows: '4', placeholder: 'Tell us about yourself', required: true })
+            ),
+            e('button', { type: 'submit', className: 'mt-6 bg-indigo-600 text-blue px-6 py-3 rounded-lg hover-scale' }, 'Apply Now')
+          )
+        )
+      );
+    }
+
+    function Contact() {
+      return e('section', { id: 'contact', className: 'py-16 bg-gray-100' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('h2', { className: 'text-3xl font-bold mb-6' }, 'Contact Us'),
+          e('p', { className: 'text-lg max-w-2xl mx-auto mb-6' },
+            'Reach out to Empower Learning Hub for more information or to join our community serving the Northwest Arkansas area.'
+          ),
+          e('p', { className: 'text-lg' }, e('a', { href: 'mailto:info@empowerlearninghub.com', className: 'text-indigo-600' }, 'info@empowerlearninghub.com')),
+          //e('p', { className: 'text-lg' }, 'Phone: (479) 555-1234'),
+          e('p', { className: 'text-lg' }, 'Address: 719 W Walnut St, Ste 103, Box 188, Rogers, AR 72758')
+        )
+      );
+    }
+
+    function Footer() {
+      return e('footer', { className: 'bg-gradient text-white py-8' },
+        e('div', { className: 'container mx-auto text-center' },
+          e('p', null, '© 2025 Empower Learning Hub. All rights reserved.')
+        )
+      );
+    }
+/*
+    function App() {
+      useEffect(() => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = anchor.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              const headerHeight = document.querySelector('nav').offsetHeight;
+              const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+              window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+          });
+        });
+      }, []);
+
+      return e('div', null,
+        e(HeaderSection),
+        e(Hero),
+        e(About),
+        e(Classes),
+        e(Calendar),
+        e(ClassRequestForm),
+        e(TeacherSolicitation),
+        e(Contact),
+        e(Footer)
+      );
+    }
+*/
+// Generated by Copilot below
+function App() {
+  useEffect(() => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = anchor.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          const headerHeight = document.querySelector('nav').offsetHeight;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+      });
+    });
+  }, []);
+
+  return e('div', null,
+    e(NavBar),
+    e(Hero),
+    e(About),
+    e(Classes),
+    e(Calendar),
+    e(ClassRequestForm),
+    e(TeacherSolicitation),
+    e(Contact),
+    e(Footer)
+  );
+}
+
+root.render(e(App));
