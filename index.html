@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-markdown@8.0.7/dist/react-markdown.umd.min.js"></script>
 <!--<link href="css/tailwind.css" rel="stylesheet">-->
   <link href="css/calendar-theme.css" rel="stylesheet" />
   <!--script>
@@ -182,51 +183,138 @@
       );
     }
 
+/*
     function Classes() {
       const classGroups = [
         {
           title: 'Grade 1 (Multiple locations)',
-          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Tuesdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Tuesdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Wednesdays 9:00 – 10:25AM (Academic Advantage)\nCost: $525/Class including a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teacher: Debby Herring',
+            'Classes:',
+            '\tReading: Tuesdays 9:30 – 10:50AM (Catalyst)',
+            '\tLanguage Arts (Writing, Spelling, and Grammar): Tuesdays 11:00AM – 12:30PM (Catalyst)',
+            '\tRightStart Math: Wednesdays 9:00 – 10:25AM (Academic Advantage)',
+            'Cost: $525/Class including a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade1.html'
         },
         {
           title: 'Grade 2 (Multiple locations)',
-          description: 'Teacher: Debby Herring\nClasses:\n\tReading: Thursdays 9:30 – 10:50AM (Catalyst)\n\tLanguage Arts (Writing, Spelling, and Grammar): Thursdays 11:00AM – 12:30PM (Catalyst)\n\tRightStart Math: Tuesdays 8:30AM – 9:30PM (Catalyst)\nCost: $435/Class including a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teacher: Debby Herring',
+            'Classes:',
+            '\tReading: Thursdays 9:30 – 10:50AM (Catalyst)',
+            '\tLanguage Arts (Writing, Spelling, and Grammar): Thursdays 11:00AM – 12:30PM (Catalyst)',
+            '\tRightStart Math: Tuesdays 8:30AM – 9:30PM (Catalyst)',
+            'Cost: $435/Class including a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade2.html'
         },
         {
           title: 'Grade 3 (Catalyst location)',
-          description: 'Teacher: Kacy Tribble\nClasses:\n\tRightStart Math: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\n\tRightStart Math: Thursdays 8:30AM – 9:30PM (Catalyst)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teacher: Kacy Tribble',
+            'Classes:',
+            '\tRightStart Math: Tuesdays/Thursdays 8:30 – 9:30AM',
+            '\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM',
+            '\tRightStart Math: Thursdays 8:30AM – 9:30PM (Catalyst)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade3.html'
         },
         {
           title: 'Grade 4 (Catalyst location)',
-          description: 'Teachers: Kacy Tribble\nClasses:\n\tSaxon Math 5/4: Tuesdays/Thursdays 8:30 – 9:30AM\n\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Kacy Tribble',
+            'Classes:',
+            '\tSaxon Math 5/4: Tuesdays/Thursdays 8:30 – 9:30AM',
+            '\tHistory with Language Arts 3rd/4th: Tuesdays/Thursdays 9:30AM – 12:30PM',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade4.html'
         },
         {
           title: 'Grade 5 (Multiple locations)',
-          description: 'Teachers: Angie Tennant, Chris Herring, Debby Herring, and Kelley Easley\nClasses:\n\tSaxon Math 5th Grade: Tuesdays/Thursdays 9:30 – 10:30AM (Catalyst)\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Angie Tennant, Chris Herring, Debby Herring, and Kelley Easley',
+            'Classes:',
+            '\tSaxon Math 5th Grade: Tuesdays/Thursdays 9:30 – 10:30AM (Catalyst)',
+            '\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)',
+            '\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)',
+            '\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade5.html'
         },
         {
           title: 'Grade 6 (Multiple locations)',
-          description: 'Teachers: Angie Tennant, Kelley Easley, and Chris Herring\nClasses:\n\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Angie Tennant, Kelley Easley, and Chris Herring',
+            'Classes:',
+            '\tHistory with Language Arts 5th/6th: Tuesdays/Thursdays 9:30AM – 12:30PM (Catalyst)',
+            '\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)',
+            '\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade6.html'
         },
         {
           title: 'Grade 7 (Multiple locations)',
-          description: 'Teachers: Crystal Schmidt, Angie Tennant and Chris Herring\nClasses:\n\t7th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Crystal Schmidt, Angie Tennant and Chris Herring',
+            'Classes:',
+            '\t7th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)',
+            '\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)',
+            '\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade7.html'
         },
         {
           title: 'Grade 8 (Multiple locations)',
-          description: 'Teachers: Crystal Schmidt, Angie Tennant, Chris Herring, and Beth Jennings\nClasses:\n\t8th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Crystal Schmidt, Angie Tennant, Chris Herring, and Beth Jennings',
+            'Classes:',
+            '\t8th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)',
+            '\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)',
+            '\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)',
+            '\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)',
+            '\tPhysical Science: Wednesday 10:30 – 11:55AM (Academic Advantage)',
+            '\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade8.html'
         },
         {
           title: 'Grade 9th - 12th High School (Multiple locations)',
-          description: 'Teachers: Crystal Schmidt, Angie Tennant, Kelley Easley, Chris Herring, Debby Herring, and Beth Jennings\nClasses:\n\t9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)\n\tAlgebra 2: Tuesdays and Thursdays 9:00 – 9:55AM (Academic Advantage)\n\tHigh School Geometry: Tuesdays and Thursdays 10:00 – 10:55AM (Academic Advantage)\n\tPre-Calculus: Tuesdays and Thursdays 11:00 – 11:55AM (Academic Advantage)\n\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)\n\tAmerican History with Literature: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tGovernment/Civics: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)\n\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)\n\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)\n\tPhysical Science: Wednesday 10:00 – 11:25AM (Academic Advantage)\n\tWriting Elegant Essays: Wednesdays 12:00 – 1:30PM (Academic Advantage)\n\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)\n\tChemistry: Wednesday 2:00 – 3:30PM (Academic Advantage)\n\tSurvey of World History: Wednesday 1:30 – 3:00PM (Academic Advantage)\nCost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.\nClick to see detailed information about these classes.',
+          description: [
+            'Teachers: Crystal Schmidt, Angie Tennant, Kelley Easley, Chris Herring, Debby Herring, and Beth Jennings',
+            'Classes:',
+            '\t9th Grade Learning Nest 2025-2026: Tuesdays/Thursdays 9:00AM - 12:00PM (Catalyst)',
+            '\tAlgebra 2: Tuesdays and Thursdays 9:00 – 9:55AM (Academic Advantage)',
+            '\tHigh School Geometry: Tuesdays and Thursdays 10:00 – 10:55AM (Academic Advantage)',
+            '\tPre-Calculus: Tuesdays and Thursdays 11:00 – 11:55AM (Academic Advantage)',
+            '\tAlgebra I: Tuesdays and Thursdays 1:00 – 1:55PM (Academic Advantage)',
+            '\tAmerican History with Literature: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)',
+            '\tGovernment/Civics: Tuesdays and Thursdays 1:30 – 2:25PM (Academic Advantage)',
+            '\tIntro to Computer Science with Python: Tuesdays and Thursdays 2:30 – 3:25 PM (Academic Advantage)',
+            '\tLanguage Arts for IEW Advanced Beginners: Wednesdays 10-11:30AM (Academic Advantage)',
+            '\tPhysical Science: Wednesday 10:00 – 11:25AM (Academic Advantage)',
+            '\tWriting Elegant Essays: Wednesdays 12:00 – 1:30PM (Academic Advantage)',
+            '\tComputer Literacy: Wednesday 1 – 2PM (Academic Advantage)',
+            '\tChemistry: Wednesday 2:00 – 3:30PM (Academic Advantage)',
+            '\tSurvey of World History: Wednesday 1:30 – 3:00PM (Academic Advantage)',
+            'Cost: Varies per Class plus a non-refundable deposit per student for the fall semester including curriculum.',
+            'Click to see detailed information about these classes.'
+          ].join('\n'),
           link: 'grade9-12.html'
         }
       ];
@@ -243,6 +331,46 @@
               },
                 e('h3', { className: 'text-xl font-semibold mb-2' }, group.title),
                 formatDescription(group.description, group.link)
+              )
+            )
+          )
+        )
+      );
+    }
+*/
+    function Classes() {
+      const [markdowns, setMarkdowns] = useState([]);
+
+      const classFiles = [
+        { title: 'Grade 1 (Multiple locations)', file: 'grade1.md' },
+        { title: 'Grade 2 (Multiple locations)', file: 'grade2.md' },
+        { title: 'Grade 3 (Catalyst location)', file: 'grade3.md' },
+        { title: 'Grade 4 (Catalyst location)', file: 'grade4.md' },
+        { title: 'Grade 5 (Multiple locations)', file: 'grade5.md' },
+        { title: 'Grade 6 (Multiple locations)', file: 'grade6.md' },
+        { title: 'Grade 7 (Multiple locations)', file: 'grade7.md' },
+        { title: 'Grade 8 (Multiple locations)', file: 'grade8.md' },
+        { title: 'Grade 9th - 12th High School (Multiple locations)', file: 'grade9-12.md' }
+    ];
+
+      useEffect(() => {
+        Promise.all(
+          classFiles.map(({ file }) =>
+            fetch(`/content/classes/${file}`).then(res => res.text())
+          )
+        ).then(contents => setMarkdowns(contents));
+      }, []);
+
+      return e('section', { id: 'classes', className: 'py-16' },
+        e('div', { className: 'container mx-auto' },
+          e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
+          e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
+            markdowns.map((md, index) =>
+              e('div', {
+                key: index,
+                className: 'bg-white p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 block cursor-pointer'
+              },
+                e(window.ReactMarkdown, null, md)
               )
             )
           )
