@@ -356,7 +356,16 @@
       useEffect(() => {
         Promise.all(
           classFiles.map(({ file }) =>
-            fetch(`/content/classes/${file}`).then(res => res.text())
+            //fetch(`/content/classes/${file}`).then(res => res.text())
+            fetch(`content/classes/${file}`)
+              .then(res => {
+                if (!res.ok) throw new Error(`Failed to load ${file}`);
+                return res.text();
+              })
+              .catch(err => {
+                console.error(err);
+                return `### ${file}\nContent unavailable.`;
+              })
           )
         ).then(contents => setMarkdowns(contents));
       }, []);
