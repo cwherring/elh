@@ -1,6 +1,9 @@
 {
-  "name": "Empower Learning Hub",
-  "short_name": "Empower",
+  "name": "Empower Learning Hub - Homeschool Co-op Classes",
+  "short_name": "Empower Learning Hub",
+  "description": "Quality homeschool co-op classes for grades 1-12 in Northwest Arkansas",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +18,10 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#4F46E5",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["education", "lifestyle"],
+  "lang": "en-US"
 }
