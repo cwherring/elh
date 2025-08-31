@@ -186,7 +186,7 @@
 
     // The Classes component below loads markdown files for each class group and renders them using ReactMarkdown.
     // This replaces the previous hardcoded classGroups array approach (see commented-out code above).
-    function ClassGroup({ title, link, mdFile }) {
+/*    function ClassGroup({ title, link, mdFile }) {
       const [description, setDescription] = useState('');
       const [loading, setLoading] = useState(true);
       useEffect(() => {
@@ -210,7 +210,7 @@
         e(ReactMarkdown, { children: description, components: { a: ({ node, ...props }) => e('a', { ...props, target: '_blank', rel: 'noopener noreferrer' }) } })
       );
     }
-
+*/
     function Classes() {
       const classGroups = [
         { title: 'Grade 1 (Multiple locations)', link: 'grade1.html', mdFile: 'content/classes/grade1.md' },
@@ -229,7 +229,7 @@
           e('h2', { className: 'text-3xl font-bold text-center mb-8' }, 'Our Classes'),
           e('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' },
             classGroups.map((group, index) =>
-              e(ClassGroup, { key: index, title: group.title, link: group.link, mdFile: group.mdFile })
+              //e(ClassGroup, { key: index, title: group.title, link: group.link, mdFile: group.mdFile })
             )
           )
         )
