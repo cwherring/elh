@@ -4,7 +4,7 @@
 
 ## Spanish Language Learning (Academic Advantage)
 
-Spanish Bites is an engaging introduction to Spanish language and culture designed for young learners. Students will develop basic conversational skills, learn essential vocabulary, and explore Hispanic cultures through interactive activities, songs, and games.
+Spanish Bites is an engaging introduction to Spanish language and culture designed for multi-aged learners. Students will develop basic conversational skills, learn essential vocabulary, and explore Hispanic cultures through interactive activities, songs, and games.
 
 ---
 
